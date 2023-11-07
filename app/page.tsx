@@ -9,6 +9,8 @@ import { GithubIcon, SearchIcon } from "@/components/icons";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import {SearchBar} from "../components/searchBar";
+import {ButtonRedirect} from "../components/buttonRedirect";
+
 
 export default function Home() {
 	return (
@@ -24,19 +26,7 @@ export default function Home() {
 				<br></br><br></br>
 				<br></br><br></br>
 				<SearchBar />
-	<ul className="grid grid-cols-2 gap-4 p-4" style={{backgroundColor: 'rgba(20, 20, 20, 0)',borderRadius: '15px', width:625 }}>
-  {siteConfig.frontPageItems.map((item) => (
-    <div key={item.label}className="p-4 flex" style={{backgroundColor: 'rgba(20, 20, 20, 0.6)',borderRadius: '15px', width:300 }}>	
-      <div className="flex items-center">
-        <img src={item.pfp} alt="Image 1" className="h-16 w-16" />
-      </div>
-      <div className="ml-4">
-        <h2 className="text-xl font-bold text-white">{item.label}</h2>
-        <p className="text-sm font-bold text-gray-300">{item.desc}</p>
-      </div>
-    </div>
-  ))}
-</ul>
+ 				<ButtonRedirect />
 
 
 				<div className="grid grid-cols-2 gap-4">

@@ -15,12 +15,18 @@ import { siteConfig } from "@/config/site";
 import NextLink from "next/link";
 import { Logo, SearchIcon, GithubIcon } from "@/components/icons";
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export const Navbar = () => {
 	const [inputValue, setInputValue] = useState('');
+	const router = useRouter();
 
 	const handleButtonClick = () => {
-	  console.log('Button clicked');
+	  const searchArgument = inputValue;
+	  if(searchArgument != ""){
+		router.refresh();
+		router.push(`/displaydata?search=${searchArgument}`);
+	  }
 	  setInputValue("");
 	};
   
@@ -32,10 +38,10 @@ export const Navbar = () => {
 		<NextUINavbar maxWidth="xl" position="sticky">
 			<NavbarContent className="basis-1/5 sm:basis-full" justify="start">
 				<NavbarBrand as="li" className="gap-0 max-w-fit">
-					<NextLink className="flex justify-start items-center gap-0" href="/">
+					<Link className="flex justify-start items-center gap-0" href="/">
 						<Logo />
 						<p className="font-bold text-inherit">J1R4's SB Profile Viewer</p>
-					</NextLink>
+					</Link>
 				</NavbarBrand>
 			</NavbarContent>
 

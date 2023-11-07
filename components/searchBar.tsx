@@ -3,12 +3,17 @@ import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import { useState } from "react";
 import { SearchIcon } from "./icons";
+import { useRouter } from 'next/navigation';
 
 export const SearchBar = () => {
 	const [inputValue, setInputValue] = useState('');
+  const router = useRouter();
 
 	const handleButtonClick = () => {
-	  console.log('Button clicked');
+    const searchArgument = inputValue;
+	  if(searchArgument != ""){
+		router.push(`/displaydata?search=${searchArgument}`);
+	  }
       setInputValue("");
 	};
   
