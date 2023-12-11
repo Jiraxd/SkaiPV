@@ -67,7 +67,7 @@ export const SoloSkill = ({
         }}
       >
         <Image
-          src={`/zajebanyicony/${value}.png`}
+          src={`/zajebanyicony/${value.toLowerCase()}.png`}
           priority={true}
           alt="Level"
           width={28}
