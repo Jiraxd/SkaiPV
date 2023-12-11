@@ -34,7 +34,13 @@ export const SkillsDisplay = ({
             transform: "translateY(50%) translateX(12%)",
           }}
         >
-          <Image src="/earth.png" alt="Level" width={36} height={36} />
+          <Image
+            src="/zajebanyicony/earth.png"
+            alt="Level"
+            width={36}
+            height={36}
+            priority={true}
+          />
         </div>
         <Progress
           label={

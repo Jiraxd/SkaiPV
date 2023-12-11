@@ -66,7 +66,13 @@ export const SoloSkill = ({
           alignItems: "center",
         }}
       >
-        <Image src={`/${value}.png`} alt="Level" width={28} height={28} />
+        <Image
+          src={`/zajebanyicony/${value}.png`}
+          priority={true}
+          alt="Level"
+          width={28}
+          height={28}
+        />
       </div>
       <Progress
         label={
