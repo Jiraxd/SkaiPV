@@ -12,7 +12,7 @@ export const SearchBar = () => {
 	const handleButtonClick = () => {
     const searchArgument = inputValue;
 	  if(searchArgument != ""){
-		router.push(`/displaydata?search=${searchArgument}`);
+		router.push(`/profile/${searchArgument}`);
 	  }
       setInputValue("");
 	};
