@@ -67,7 +67,7 @@ export const SoloSkill = ({
           alignItems: "center",
         }}
       >
-        <Image src={linkToImage} alt="Level" width={28} height={28} />
+        <img src={linkToImage} alt="Level" width={28} height={28} />
       </div>
       <Progress
         label={
