@@ -8,5 +8,5 @@ export async function GET(request: Request) {
     `https://api.hypixel.net/v2/skyblock/museum?key=${apiKey}&uuid=${id}`
   );
   const valuetoreturn = await data.json();
-  return NextResponse.json(valuetoreturn);
+  return NextResponse.json({ valuetoreturn });
 }
