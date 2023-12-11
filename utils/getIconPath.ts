@@ -35,7 +35,6 @@ export function GetIconPath(itemData: any){
         else{
         path += armorName + "_armor/icons/" + armorName + piece + ".png";
         }
-        console.log(path);
         return path;
     }
     else{
