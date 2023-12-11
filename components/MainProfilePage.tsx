@@ -131,7 +131,7 @@ export const MainProfilePage = ({
         <div className="">
           <h1 className={title()}>Currently viewing </h1>
           <h1 className={title()} style={{ color: "yellow" }}>
-            {search}'s
+            {search}&apos;s
           </h1>
           <h1 className={title()}>
             {" "}

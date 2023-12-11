@@ -45,7 +45,9 @@ export const Navbar = () => {
         <NavbarBrand as="li" className="gap-0 max-w-fit">
           <Link className="flex justify-start items-center gap-0" href="/">
             <Logo />
-            <p className="font-bold text-inherit">J1R4's SB Profile Viewer</p>
+            <p className="font-bold text-inherit">
+              J1R4&apos;s SB Profile Viewer
+            </p>
           </Link>
         </NavbarBrand>
       </NavbarContent>
