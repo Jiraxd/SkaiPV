@@ -10,7 +10,6 @@ export const SoloSkill = ({
   value: string;
   skillData: any;
 }) => {
-  const linkToImage = `/${value}.png`;
   let experience;
   try {
     experience = playerData["player_data"]["experience"];
@@ -67,7 +66,7 @@ export const SoloSkill = ({
           alignItems: "center",
         }}
       >
-        <img src={linkToImage} alt="Level" width={28} height={28} />
+        <Image src={`/${value}.png`} alt="Level" width={28} height={28} />
       </div>
       <Progress
         label={
