@@ -7,6 +7,8 @@ import { Navbar } from "@/components/navbar";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 import { ClearButton } from "@/components/clearButton";
+import { SpeedInsights } from "@vercel/speed-insights/next"
+// npm i @vercel/speed-insights
 
 export const metadata: Metadata = {
   title: {
@@ -63,6 +65,7 @@ export default function RootLayout({
               >
                 <Navbar />
               </div>
+              <SpeedInsights/>
               <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
                 {children}
               </main>
