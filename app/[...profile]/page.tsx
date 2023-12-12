@@ -1,7 +1,7 @@
 import { MainProfilePage } from "@/components/MainProfilePage";
 import type { Metadata, ResolvingMetadata } from "next";
 
-/*export async function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: { profile: string[] };
@@ -12,7 +12,6 @@ import type { Metadata, ResolvingMetadata } from "next";
     title: returnValue,
   };
 }
-*/
 
 export default function displaydata({
   params,
