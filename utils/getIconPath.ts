@@ -16,6 +16,8 @@ export function GetIconPath(itemData: any){
       }
     let path:string = "/";
     let itemlower = item.toLowerCase();
+    if(itemlower.includes("starred"))
+      itemlower = itemlower.substring(itemlower.indexOf("_") + 1, itemlower.length);
     if(itemlower.includes("boots") || itemlower.includes("leggings") || itemlower.includes("chestplate") || itemlower.includes("helmet")){
         let armorName = itemlower.substring(0,itemlower.indexOf("_"));
         if(itemlower.includes("dragon")){
@@ -26,6 +28,9 @@ export function GetIconPath(itemData: any){
         if(itemlower.includes("dragon")){
          piece = itemlower.substring(itemlower.lastIndexOf("_"), itemlower.length);
         }
+        else if(itemlower.includes("perfect")){
+          piece = itemlower.substring(itemlower.lastIndexOf("_"), itemlower.length) + itemlower.substring(itemlower.indexOf("_"),itemlower.lastIndexOf("_"));
+        }
         else{
         piece = itemlower.substring(itemlower.indexOf("_"), itemlower.length);
         }
@@ -35,9 +40,12 @@ export function GetIconPath(itemData: any){
         else{
         path += armorName + "_armor/icons/" + armorName + piece + ".png";
         }
+        console.log(path);
         return path;
     }
     else{
-      return path += itemlower + "/" + itemlower + ".png";
+      path += itemlower + "/" + itemlower + ".png";
+      console.log(path);
+      return path;
     }
 }

@@ -66,6 +66,7 @@ export const Navbar = () => {
             placeholder="Enter username"
             style={{
               width: 500,
+              backgroundColor: "rgba(20, 20, 20, 0.0)",
             }}
           />
           <Button

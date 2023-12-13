@@ -1,75 +1,32 @@
-import { Link } from "@nextui-org/link";
 import { Navbar, NavbarContent, NavbarItem } from "@nextui-org/navbar";
+import Link from "next/link";
 
 export const DataNavbar = () => {
+  const navbarItems = [
+    { id: "armor", label: "Armor" },
+    { id: "wardrobe", label: "Weapons" },
+    { id: "weapons", label: "Accessories" },
+    { id: "accessories", label: "Pets" },
+    { id: "pets", label: "Slayer" },
+    { id: "slayer", label: "Collections" },
+    { id: "collections", label: "Extra Stats" },
+    { id: "extrastats", label: "HOTM" },
+    { id: "hotm", label: "Rift" },
+    { id: "rift", label: "Museum" },
+    { id: "museum", label: "Garden" },
+    { id: "garden", label: "Fishing" },
+  ];
+
   return (
-    <Navbar position="sticky">
+    <Navbar position="sticky" id="navbarData">
       <NavbarContent>
-        <NavbarItem>
-          <Link color="foreground" href="#armor">
-            Armor
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#weapons">
-            Weapons
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#inventory">
-            Accessories
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#inventory">
-            Inventory
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Pets
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link href="#" color="foreground">
-            Slayer
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Collections
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Extra Stats
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            HOTM
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Rift
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Museum
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Garden
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Fishing
-          </Link>
-        </NavbarItem>
+        {navbarItems.map((item) => (
+          <NavbarItem key={item.id}>
+            <Link href={`#${item.id}`} style={{ cursor: "pointer" }}>
+              {item.label}
+            </Link>
+          </NavbarItem>
+        ))}
       </NavbarContent>
     </Navbar>
   );

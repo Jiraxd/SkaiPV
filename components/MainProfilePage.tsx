@@ -10,6 +10,7 @@ import { DataNavbar } from "@/components/DataNavbar";
 import { ArmorDisplay } from "@/components/Armor";
 import { Spacer } from "@nextui-org/spacer";
 import { WardrobeDisplay } from "./wardrobe";
+import { WeaponsDisplay } from "./weaponsDisplay";
 
 // MIN RES JE 1321X1080, POTOM TO CHCE PŘEDĚLAT
 export const MainProfilePage = ({
@@ -209,7 +210,7 @@ export const MainProfilePage = ({
           </div>
           <br />
           <br />
-          <Divider className="padding-8"></Divider>
+          <Divider id="armor" className="padding-8"></Divider>
           <br />
         </div>
         <div
@@ -239,7 +240,7 @@ export const MainProfilePage = ({
           ARMOR
         </h1>
         <Spacer y={4} />
-        <div id="armor">
+        <div>
           <ArmorDisplay
             pData={currentProfile}
             isEquipment={false}
@@ -280,7 +281,38 @@ export const MainProfilePage = ({
         <div id="wardrobe">
           <WardrobeDisplay playerData={currentProfile} />
         </div>
+        <h1
+          className={title()}
+          style={{
+            borderBottom: "4px solid green",
+            display: "inline-block",
+            paddingBottom: "8px",
+          }}
+        >
+          WEAPONS
+        </h1>
         <Spacer y={4} />
+        <div id="weapons">
+          <WeaponsDisplay playerData={currentProfile} />
+        </div>
+        <Spacer y={10} />
+        <h1
+          className={title()}
+          style={{
+            borderBottom: "4px solid green",
+            display: "inline-block",
+            paddingBottom: "8px",
+          }}
+        >
+          ACCESSORIES
+        </h1>
+        <Spacer y={4} />
+        <div id="accessories">
+          <>ACCESSORIES</>
+        </div>
+        <Spacer y={96} />
+        <Spacer y={96} />
+        <Spacer y={96} />
       </div>
       <div
         style={{
