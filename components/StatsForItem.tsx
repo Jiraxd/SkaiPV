@@ -28,7 +28,7 @@ function getShortName(statName: string): string {
 }
 
 export const ShowStats = (pDataxd: any) => {
-  const [statsList, setStats] = useState<stat[]>([]);
+  const [statsList, setStats] = useState<stat[] | null>(null);
   useEffect(() => {
     const pData = pDataxd["pDataxd"];
     Object.values(pData).forEach((value: any) => {
@@ -59,15 +59,19 @@ export const ShowStats = (pDataxd: any) => {
           color: getColorForStat(name),
           shortName: getShortName(name),
         };
-        const list = statsList;
-        const statFromList = list.find((f) => f.name === valuestat.name);
-        if (statFromList) statFromList.value += valuestat.value;
-        else list.push(valuestat);
+        const list: stat[] = [];
+        if (statsList) {
+          const statFromList = statsList.find((f) => f.name === valuestat.name);
+          if (statFromList) statFromList.value += valuestat.value;
+          else list.push(valuestat);
+        } else {
+          list.push(valuestat);
+        }
         setStats(list);
       }
     });
-  }, [pDataxd]);
-  if (statsList.length <= 0) return <span>Loading...</span>;
+  }, []);
+  if (statsList == null) return <span>Loading...</span>;
   return (
     <>
       {Object.values(statsList).map((valuestat, index) => (

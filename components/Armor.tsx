@@ -57,7 +57,7 @@ export const ArmorDisplay = ({
       setArmor(armorek);
     };
     fetchData();
-  }, [pData]);
+  }, []);
 
   if (armor === null) return <div>Loading...</div>;
   if (armor === "null") return <div>Player has API disabled!</div>;
