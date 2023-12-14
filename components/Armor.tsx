@@ -8,7 +8,7 @@ import { GetIconPath } from "@/utils/getIconPath";
 import { GetBGColorItem, GetColorFromMCColor } from "@/utils/ColorStuff";
 import { Spacer } from "@nextui-org/spacer";
 import { FormattedMCLine } from "./FormattedLine";
-import { ShowStats } from "./statsForItem";
+import { ShowStats } from "./StatsForItem";
 export const ArmorDisplay = ({
   pData,
   isEquipment,
