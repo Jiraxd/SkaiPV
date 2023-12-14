@@ -7,7 +7,6 @@ import { Navbar } from "@/components/navbar";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 import { ClearButton } from "@/components/clearButton";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: {
@@ -40,7 +39,6 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <SpeedInsights />
         <div
           style={{
             background: "url(/bg.jpg)",
