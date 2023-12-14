@@ -105,8 +105,6 @@ export const AccDisplay = ({ playerData }: { playerData: any }) => {
   }, [playerData]);
   if (accs === null) return <div>Loading...</div>;
   if (accs === "null") return <div>Player has API disabled!</div>;
-  console.log(accs);
-  console.log(allAccs);
   return (
     <>
       <div

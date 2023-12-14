@@ -8,7 +8,7 @@ import { GetIconPath } from "@/utils/getIconPath";
 import { GetBGColorItem, GetColorFromMCColor } from "@/utils/ColorStuff";
 import { Spacer } from "@nextui-org/spacer";
 import { FormattedMCLine } from "./FormattedLine";
-import { ShowStats } from "./StatsForItem";
+import { ShowStats } from "./statsForItem";
 export const ArmorDisplay = ({
   pData,
   isEquipment,
@@ -154,7 +154,7 @@ export const ArmorDisplay = ({
             fontWeight: "bold",
           }}
         >
-          Bonus stats: <ShowStats pDataxd={armor} />
+          Bonus stats: <ShowStats pData={armor} />
         </span>
       </p>
     </>

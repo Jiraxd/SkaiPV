@@ -27,10 +27,10 @@ function getShortName(statName: string): string {
   }
 }
 
-export const ShowStats = (pDataxd: any) => {
+export const ShowStats = ({ pData }: { pData: any }) => {
   const [statsList, setStats] = useState<stat[] | null>(null);
   useEffect(() => {
-    const pData = pDataxd["pDataxd"];
+    const list: stat[] = [];
     Object.values(pData).forEach((value: any) => {
       for (const valuexd of Object.values(value["tag"]["display"]["Lore"])) {
         if (valuexd === "") break;
@@ -59,17 +59,13 @@ export const ShowStats = (pDataxd: any) => {
           color: getColorForStat(name),
           shortName: getShortName(name),
         };
-        const list: stat[] = [];
-        if (statsList) {
-          const statFromList = statsList.find((f) => f.name === valuestat.name);
-          if (statFromList) statFromList.value += valuestat.value;
-          else list.push(valuestat);
-        } else {
-          list.push(valuestat);
-        }
-        setStats(list);
+
+        const statFromList = list.find((f) => f.name === valuestat.name);
+        if (statFromList) statFromList.value += valuestat.value;
+        else list.push(valuestat);
       }
     });
+    setStats(list);
   }, []);
   if (statsList == null) return <span>Loading...</span>;
   return (
