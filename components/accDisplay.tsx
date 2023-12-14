@@ -206,7 +206,7 @@ export const AccDisplay = ({ playerData }: { playerData: any }) => {
           }}
         >
           {Object.values(allAccs).map((value: any, index) => (
-            <div>
+            <div key={index}>
               <div
                 className="group relative cursor-pointer"
                 style={{
@@ -218,7 +218,6 @@ export const AccDisplay = ({ playerData }: { playerData: any }) => {
                 onMouseEnter={(e) => handleMouseEnter(index, e, 2)}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                key={index}
               >
                 <Image
                   src={`/${getItemPathFromName(value["id"])}`}
