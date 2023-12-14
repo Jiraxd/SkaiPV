@@ -5,7 +5,7 @@ export const DataNavbar = () => {
   const navbarItems = [
     { id: "armor", label: "Armor" },
     { id: "wardrobe", label: "Weapons" },
-    { id: "weapons", label: "Accessories" },
+    { id: "weapons", label: "Accessory Bag" },
     { id: "accessories", label: "Pets" },
     { id: "pets", label: "Slayer" },
     { id: "slayer", label: "Collections" },

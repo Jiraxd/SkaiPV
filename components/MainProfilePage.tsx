@@ -306,12 +306,23 @@ export const MainProfilePage = ({
             paddingBottom: "8px",
           }}
         >
-          ACCESSORIES
+          ACCESSORY BAG
         </h1>
         <Spacer y={4} />
         <div id="accessories">
           <AccDisplay playerData={currentProfile}></AccDisplay>
         </div>
+        <Spacer y={10} />
+        <h1
+          className={title()}
+          style={{
+            borderBottom: "4px solid green",
+            display: "inline-block",
+            paddingBottom: "8px",
+          }}
+        >
+          INVENTORY
+        </h1>
         <Spacer y={96} />
         <Spacer y={96} />
         <Spacer y={96} />
