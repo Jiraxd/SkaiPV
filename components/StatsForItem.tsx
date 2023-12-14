@@ -66,7 +66,7 @@ export const ShowStats = (pDataxd: any) => {
         setStats(list);
       }
     });
-  }, []);
+  }, [pDataxd]);
   if (statsList.length <= 0) return <span>Loading...</span>;
   return (
     <>
