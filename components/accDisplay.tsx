@@ -191,18 +191,35 @@ export const AccDisplay = ({ playerData }: { playerData: any }) => {
       <button
         className="cursor-pointer"
         style={{ fontSize: "24px" }}
-        onClick={() => setClicked(!Clicked)}
+        onClick={() => {
+          const xd = document.getElementById("divformissingaccessories");
+          if (xd)
+            if (xd.className === "opacity-100") {
+              xd.className = "opacity-0";
+              setTimeout(() => {
+                setClicked(!Clicked);
+              }, 400);
+            } else {
+              setClicked(!Clicked);
+            }
+          else {
+            setClicked(!Clicked);
+          }
+        }}
       >{`Missing accessories ${Clicked ? "↑" : "↓"}`}</button>
       <Spacer y={8} />
       {Clicked && (
         <div
+          id="divformissingaccessories"
+          onLoad={(e) => (e.currentTarget.className = "opacity-100")}
+          className="opacity-0"
           style={{
             display: "flex",
             flexDirection: "row",
             gap: "20px",
             flexWrap: "wrap",
             width: "85%",
-            transition: "0.3s ease-out",
+            transition: "opacity 0.5s ease-in-out",
           }}
         >
           {Object.values(allAccs).map((value: any, index) => (
