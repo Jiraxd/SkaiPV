@@ -17,7 +17,6 @@ export const WeaponsDisplay = ({ playerData }: { playerData: any }) => {
     setHoveredIndex(index);
     updateMousePosition(event);
   };
-  console.log(playerData);
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     updateMousePosition(event);
@@ -70,7 +69,6 @@ export const WeaponsDisplay = ({ playerData }: { playerData: any }) => {
             (f["tag"]["display"]["Lore"] as string[]).length - 1
           ].includes("SWORD" || "BOW") === true
       );
-      console.log(weapons);
       setWeapons(weapons);
     };
     convert();

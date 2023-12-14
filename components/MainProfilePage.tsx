@@ -11,6 +11,7 @@ import { ArmorDisplay } from "@/components/Armor";
 import { Spacer } from "@nextui-org/spacer";
 import { WardrobeDisplay } from "./wardrobe";
 import { WeaponsDisplay } from "./weaponsDisplay";
+import { AccDisplay } from "./accDisplay";
 
 // MIN RES JE 1321X1080, POTOM TO CHCE PŘEDĚLAT
 export const MainProfilePage = ({
@@ -34,7 +35,8 @@ export const MainProfilePage = ({
       setuuid(responsexd["data"]["id"]);
       const id = responsexd["data"]["id"];
       const skillData = await fetch(
-        `https://api.hypixel.net/v2/resources/skyblock/skills`
+        `https://api.hypixel.net/v2/resources/skyblock/skills`,
+        { cache: "force-cache" }
       ).then((res) => res.json());
       setSkill(skillData);
       const data = await fetch(`/api/profileAPI?id=${id}`);
@@ -308,7 +310,7 @@ export const MainProfilePage = ({
         </h1>
         <Spacer y={4} />
         <div id="accessories">
-          <>ACCESSORIES</>
+          <AccDisplay playerData={currentProfile}></AccDisplay>
         </div>
         <Spacer y={96} />
         <Spacer y={96} />

@@ -1,3 +1,4 @@
+"use client";
 import { GetColorFromMCColor } from "@/utils/ColorStuff";
 import { stat } from "@/utils/statsFromItem";
 import { STATS_DATA } from "../constants/stats";
