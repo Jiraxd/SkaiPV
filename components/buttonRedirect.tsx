@@ -47,13 +47,7 @@ export const ButtonRedirect = () => {
               }}
             >
               <div className="flex items-center">
-                <Image
-                  src={item.pfp}
-                  alt="Image 1"
-                  width={16}
-                  height={16}
-                  className="h-16 w-16 object-cover"
-                />
+                <img src={item.pfp} alt="Image 1" className="h-16 w-16" />
               </div>
               <div className="ml-4">
                 <h2 className="text-xl font-bold text-white">{item.label}</h2>

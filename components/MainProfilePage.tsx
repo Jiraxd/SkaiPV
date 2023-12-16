@@ -341,12 +341,10 @@ export const MainProfilePage = ({
           left: "8%",
         }}
       >
-        <Image
+        <img
           src={linkFullBodyRender}
           alt="Image 1"
           style={{ position: "fixed" }}
-          width={200}
-          height={200}
         />
       </div>
     </>

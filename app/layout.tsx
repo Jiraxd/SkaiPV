@@ -7,6 +7,7 @@ import { Navbar } from "@/components/navbar";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 import { ClearButton } from "@/components/clearButton";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: {
@@ -39,17 +40,16 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <div
-          style={{
-            background: "url(/bg.jpg)",
-            backgroundSize: "cover",
-            backgroundAttachment: "fixed",
-            minWidth: "100%",
-            minHeight: "100%",
-            position: "fixed",
-            overflow: "auto",
-          }}
-        >
+        <div style={{ position: "fixed", minWidth: "100%", minHeight: "100%" }}>
+          <Image
+            src={"/bg.jpg"}
+            width={2560}
+            height={1440}
+            alt="Background Image"
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+          />
           <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
             <div className="relative flex flex-col h-screen">
               <div
