@@ -11,6 +11,10 @@ module.exports = {
                 protocol: 'https',
                 hostname: 'mc-heads.net'
             },
+            {
+                hostname: "s.namemc.com",
+                protocol: 'https',
+            }
         ],
     },
 };

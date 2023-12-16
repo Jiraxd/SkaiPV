@@ -52,7 +52,7 @@ export const ButtonRedirect = () => {
                   alt="Image 1"
                   width={16}
                   height={16}
-                  className="h-16 w-16"
+                  className="h-16 w-16 object-cover"
                 />
               </div>
               <div className="ml-4">
