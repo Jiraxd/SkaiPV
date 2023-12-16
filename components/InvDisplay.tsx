@@ -11,7 +11,14 @@ export const InvDisplay = ({ playerData }: { playerData: any }) => {
   const [selectedSection, setSelected] = useState<number>(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [navbarHoveredIndex, setNavbarHoveredIndex] = useState<number>(-1);
-
+  useEffect(() => {
+    const fetchData = async () => {
+      const inventory = playerData["inventory"]["inv_contents"]["data"];
+      const invDecoded = await ConvertNBTToJson(inventory);
+      setInvContents(invDecoded);
+    };
+    fetchData();
+  }, []);
   if (playerData["inventory"] == null)
     return <div>Player has API disabled!</div>;
 
@@ -34,14 +41,6 @@ export const InvDisplay = ({ playerData }: { playerData: any }) => {
   const updateMousePosition = (event: React.MouseEvent<HTMLDivElement>) => {
     setMousePosition({ x: event.clientX, y: event.clientY });
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      const inventory = playerData["inventory"]["inv_contents"]["data"];
-      const invDecoded = await ConvertNBTToJson(inventory);
-      setInvContents(invDecoded);
-    };
-    fetchData();
-  }, []);
 
   if (invContents == null) return <div>Loading...</div>;
   console.log(invContents);
