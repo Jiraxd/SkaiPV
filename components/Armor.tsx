@@ -89,7 +89,7 @@ export const ArmorDisplay = ({
             onMouseLeave={handleMouseLeave}
             key={index}
           >
-            <img
+            <Image
               src={`${GetIconPath(data)}`}
               alt={index.toString()}
               width={45}

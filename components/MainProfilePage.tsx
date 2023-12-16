@@ -12,6 +12,8 @@ import { Spacer } from "@nextui-org/spacer";
 import { WardrobeDisplay } from "./wardrobe";
 import { WeaponsDisplay } from "./weaponsDisplay";
 import { AccDisplay } from "./accDisplay";
+import { InvDisplay } from "./InvDisplay";
+import Image from "next/image";
 
 // MIN RES JE 1321X1080, POTOM TO CHCE PŘEDĚLAT
 export const MainProfilePage = ({
@@ -323,6 +325,10 @@ export const MainProfilePage = ({
         >
           INVENTORY
         </h1>
+        <Spacer y={4} />
+        <div id="inventory">
+          <InvDisplay playerData={currentProfile}></InvDisplay>
+        </div>
         <Spacer y={96} />
         <Spacer y={96} />
         <Spacer y={96} />
@@ -335,10 +341,12 @@ export const MainProfilePage = ({
           left: "8%",
         }}
       >
-        <img
+        <Image
           src={linkFullBodyRender}
           alt="Image 1"
           style={{ position: "fixed" }}
+          width={200}
+          height={200}
         />
       </div>
     </>

@@ -16,6 +16,9 @@ export function GetIconPath(itemData: any){
       }
     let path:string = "/";
     let itemlower = item.toLowerCase();
+    if(itemlower.includes("infini_vacuum")){
+      itemlower = "infinivacuum";
+    }
     if(itemlower.includes("starred"))
       itemlower = itemlower.substring(itemlower.indexOf("_") + 1, itemlower.length);
       if(itemlower.includes("archaeologist_compass"))
@@ -45,7 +48,12 @@ export function GetIconPath(itemData: any){
         return path;
     }
     else{
+      if(itemlower.includes("hoe_wheat")){
+        path += "farming_tools" + "/" + itemlower + ".png";
+      }
+      else{
       path += itemlower + "/" + itemlower + ".png";
+      }
       console.log(path);
       return path;
     }

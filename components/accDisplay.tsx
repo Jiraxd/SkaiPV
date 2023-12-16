@@ -129,7 +129,7 @@ export const AccDisplay = ({ playerData }: { playerData: any }) => {
             onMouseLeave={handleMouseLeave}
             key={index}
           >
-            <img
+            <Image
               src={`${GetIconPath(value)}`}
               alt={index.toString()}
               width={45}

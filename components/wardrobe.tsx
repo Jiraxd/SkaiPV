@@ -3,6 +3,7 @@ import { GetBGColorItem } from "@/utils/ColorStuff";
 import { GetIconPath } from "@/utils/getIconPath";
 import { useState, useEffect } from "react";
 import { FormattedMCLine } from "./FormattedLine";
+import Image from "next/image";
 
 export const WardrobeDisplay = (playerDataxd: any) => {
   const [wardrobe, setWardrobe] = useState<any>(null);
@@ -141,7 +142,7 @@ export const WardrobeDisplay = (playerDataxd: any) => {
                 {" "}
               </div>
             ) : (
-              <img
+              <Image
                 className="cursor-pointer"
                 style={{
                   backgroundColor: GetBGColorItem(data),
@@ -174,7 +175,7 @@ export const WardrobeDisplay = (playerDataxd: any) => {
                 {" "}
               </div>
             ) : (
-              <img
+              <Image
                 className="cursor-pointer"
                 style={{
                   backgroundColor: GetBGColorItem(chestplates[index]),
@@ -207,7 +208,7 @@ export const WardrobeDisplay = (playerDataxd: any) => {
                 {" "}
               </div>
             ) : (
-              <img
+              <Image
                 className="cursor-pointer"
                 style={{
                   backgroundColor: GetBGColorItem(leggings[index]),
@@ -240,7 +241,7 @@ export const WardrobeDisplay = (playerDataxd: any) => {
                 {" "}
               </div>
             ) : (
-              <img
+              <Image
                 className="cursor-pointer"
                 style={{
                   backgroundColor: GetBGColorItem(boots[index]),

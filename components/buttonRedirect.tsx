@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { frontPageItems, UserDisplay } from "@/models/userDisplay";
+import Image from "next/image";
 
 export const ButtonRedirect = () => {
   const router = useRouter();
@@ -46,7 +47,13 @@ export const ButtonRedirect = () => {
               }}
             >
               <div className="flex items-center">
-                <img src={item.pfp} alt="Image 1" className="h-16 w-16" />
+                <Image
+                  src={item.pfp}
+                  alt="Image 1"
+                  width={16}
+                  height={16}
+                  className="h-16 w-16"
+                />
               </div>
               <div className="ml-4">
                 <h2 className="text-xl font-bold text-white">{item.label}</h2>

@@ -1,15 +1,13 @@
-import { ConvertNBTToJson } from "@/utils/NBTData";
-import { useEffect, useState } from "react";
-import { FormattedMCLine } from "./FormattedLine";
 import { GetBGColorItem } from "@/utils/ColorStuff";
 import { GetIconPath } from "@/utils/getIconPath";
+import { FormattedMCLine } from "./FormattedLine";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
-export const WeaponsDisplay = ({ playerData }: { playerData: any }) => {
-  const [weapons, setWeapons] = useState<any>(null);
-  const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
-  const [hoveredSection, setHoveredSection] = useState<number | null>(null);
+export const InventoryContainer = ({ inventoryxd }: { inventoryxd: any[] }) => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [inventory, setInventory] = useState<any[] | null>(null);
 
   const handleMouseEnter = (
     index: number,
@@ -24,7 +22,7 @@ export const WeaponsDisplay = ({ playerData }: { playerData: any }) => {
   };
 
   const handleMouseLeave = () => {
-    setHoveredIndex(-1);
+    setHoveredIndex(null);
   };
 
   const updateMousePosition = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -32,80 +30,50 @@ export const WeaponsDisplay = ({ playerData }: { playerData: any }) => {
   };
 
   useEffect(() => {
-    if (
-      playerData["inventory"] === null ||
-      playerData["inventory"] === undefined
-    ) {
-      setWeapons("null");
-      return;
-    }
-    const encodedInv = playerData["inventory"]["inv_contents"]["data"];
-    const encodedEnder =
-      playerData["inventory"]["ender_chest_contents"]["data"];
-    const encodedBackpack = playerData["inventory"]["backpack_contents"];
-    const convert = async () => {
-      let weapons: any[] = [];
-      if (encodedInv != undefined) {
-        const invContent = await ConvertNBTToJson(encodedInv);
-        weapons = weapons.concat(invContent);
-      }
-      if (encodedBackpack != undefined) {
-        for (let i = 0; i < 17; i++) {
-          const content = await ConvertNBTToJson(
-            encodedBackpack[i.toString()]["data"]
-          );
-          weapons = weapons.concat(content);
-        }
-      }
-      if (encodedEnder != undefined) {
-        const enderContent = await ConvertNBTToJson(encodedEnder);
-        weapons = weapons.concat(enderContent);
-      }
-      weapons = await weapons.filter(
-        (f) => f["tag"] != null || f["tag"] != undefined
-      );
-      weapons = await weapons.filter(
-        (f) =>
-          (f["tag"]["display"]["Lore"] as string[])[
-            (f["tag"]["display"]["Lore"] as string[]).length - 1
-          ].includes("SWORD" || "BOW") === true
-      );
-      setWeapons(weapons);
-    };
-    convert();
-  }, [playerData]);
-  if (weapons === null) return <div>Loading...</div>;
-  if (weapons === "null") return <div>Player has API disabled!</div>;
+    let inventory = inventoryxd;
+    const firstRow = inventory.slice(0, 9);
+    const rest = inventory.slice(9, 36);
+
+    setInventory(rest.concat(firstRow));
+  }, []);
+  if (inventory == null) return <></>;
+  if (inventory.length < 1) return <></>;
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "row",
         gap: "20px",
+        width: "900px",
         flexWrap: "wrap",
-        width: "85%",
+        marginTop: "40px",
       }}
     >
-      {Object.values(weapons).map((value: any, index) => (
+      {Object.values(inventory).map((data, index) => (
         <div
           className="group relative cursor-pointer"
           style={{
-            backgroundColor: GetBGColorItem(value),
+            backgroundColor: "rgba(255, 255, 255, 0.04)",
             padding: "15px",
             borderRadius: "8px",
+            minHeight: "75px",
+            minWidth: "75px",
+            marginTop: index >= 27 ? "20px" : "0px",
           }}
           onMouseEnter={(e) => handleMouseEnter(index, e)}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           key={index}
         >
-          <Image
-            src={`${GetIconPath(value)}`}
-            alt={index.toString()}
-            width={45}
-            height={45}
-          />
-          {hoveredIndex === index && (
+          {data["tag"] != null && (
+            <Image
+              src={`${GetIconPath(data)}`}
+              alt={index.toString()}
+              width={45}
+              height={45}
+            />
+          )}
+          {hoveredIndex === index && data["tag"] != null && (
             <div
               className="fixed top-0 left-0 rounded"
               style={{
@@ -119,7 +87,7 @@ export const WeaponsDisplay = ({ playerData }: { playerData: any }) => {
             >
               <div
                 style={{
-                  backgroundColor: GetBGColorItem(value),
+                  backgroundColor: GetBGColorItem(data),
                   padding: "15px",
                   width: "100%",
                   borderTopLeftRadius: "8px",
@@ -135,13 +103,13 @@ export const WeaponsDisplay = ({ playerData }: { playerData: any }) => {
                   }}
                 >
                   <FormattedMCLine
-                    linexd={value["tag"]["display"]["Name"] as string}
+                    linexd={data["tag"]["display"]["Name"] as string}
                     isHeader={true}
                   />
                 </p>
               </div>
               <div className="p-4">
-                {Object.values(value["tag"]["display"]["Lore"]).map(
+                {Object.values(data["tag"]["display"]["Lore"]).map(
                   (value: any, index: number) => (
                     <>
                       <FormattedMCLine linexd={value} isHeader={false} />
