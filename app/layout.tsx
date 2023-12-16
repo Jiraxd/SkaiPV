@@ -40,7 +40,14 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <div style={{ position: "fixed", minWidth: "100%", minHeight: "100%" }}>
+        <div
+          style={{
+            position: "fixed",
+            minWidth: "100%",
+            minHeight: "100%",
+            overflow: "auto",
+          }}
+        >
           <Image
             src={"/bg.jpg"}
             width={2560}
