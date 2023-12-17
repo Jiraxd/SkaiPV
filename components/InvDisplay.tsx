@@ -4,6 +4,8 @@ import { ConvertNBTToJson } from "@/utils/NBTData";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { InventoryContainer } from "./InventoryContainer";
+import { EnderContainer } from "./enderContainer";
+import { BackpacksContainer } from "./backpacksContainer";
 
 export const InvDisplay = ({ playerData }: { playerData: any }) => {
   const [invContents, setInvContents] = useState<any[] | null>(null);
@@ -21,6 +23,8 @@ export const InvDisplay = ({ playerData }: { playerData: any }) => {
   }, []);
   if (playerData["inventory"] == null)
     return <div>Player has API disabled!</div>;
+
+  console.log(playerData);
 
   const handleMouseEnter = (
     index: number,
@@ -43,7 +47,6 @@ export const InvDisplay = ({ playerData }: { playerData: any }) => {
   };
 
   if (invContents == null) return <div>Loading...</div>;
-  console.log(invContents);
 
   const navbarList = [
     { label: "INV", iconName: "inv" },
@@ -108,6 +111,17 @@ export const InvDisplay = ({ playerData }: { playerData: any }) => {
       <div>
         {selectedSection === 0 && (
           <InventoryContainer inventoryxd={invContents}></InventoryContainer>
+        )}
+        {selectedSection === 1 && (
+          <BackpacksContainer
+            backpackData={playerData["inventory"]["backpack_contents"]}
+            backpackIcons={playerData["inventory"]["backpack_icons"]}
+          ></BackpacksContainer>
+        )}
+        {selectedSection === 2 && (
+          <EnderContainer
+            enderData={playerData["inventory"]["ender_chest_contents"]["data"]}
+          ></EnderContainer>
         )}
         {/* TODO: Přidat zbytek */}
       </div>

@@ -35,7 +35,6 @@ export const FormattedMCLine = ({
             color: !isHeader
               ? GetColorFromMCColor(line.substring(value, value + 2))
               : "#000000",
-            fontStyle: "bold",
           }}
         >
           {line.substring(value + 2, data[index + 1])}

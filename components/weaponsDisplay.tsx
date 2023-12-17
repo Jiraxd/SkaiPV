@@ -51,10 +51,12 @@ export const WeaponsDisplay = ({ playerData }: { playerData: any }) => {
       }
       if (encodedBackpack != undefined) {
         for (let i = 0; i < 17; i++) {
-          const content = await ConvertNBTToJson(
-            encodedBackpack[i.toString()]["data"]
-          );
-          weapons = weapons.concat(content);
+          if (encodedBackpack[i.toString()] != null) {
+            const content = await ConvertNBTToJson(
+              encodedBackpack[i.toString()]["data"]
+            );
+            weapons = weapons.concat(content);
+          }
         }
       }
       if (encodedEnder != undefined) {
