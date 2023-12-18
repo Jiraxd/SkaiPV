@@ -5,25 +5,9 @@ import Image from "next/image";
 import { GetBGColorItem } from "@/utils/ColorStuff";
 import { FormattedMCLine } from "./FormattedLine";
 
-export const EnderContainer = ({ enderData }: { enderData: any }) => {
+export const StorageDataDisplay = ({ StorageData }: { StorageData: any }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [enderContents, setEnderContents] = useState<any[] | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const invDecoded = await ConvertNBTToJson(enderData);
-      let lastIndex = 0;
-      invDecoded.forEach((value, index) => {
-        if (value["tag"] == null) {
-        } else lastIndex = index;
-      });
-      const realInv = invDecoded.slice(0, lastIndex + 1);
-      setEnderContents(realInv);
-    };
-    fetchData();
-  }, []);
-
   const handleMouseEnter = (
     index: number,
     event: React.MouseEvent<HTMLDivElement>
@@ -43,10 +27,7 @@ export const EnderContainer = ({ enderData }: { enderData: any }) => {
   const updateMousePosition = (event: React.MouseEvent<HTMLDivElement>) => {
     setMousePosition({ x: event.clientX, y: event.clientY });
   };
-
-  if (enderContents == null) return <></>;
-  if (enderContents.length < 1) return <></>;
-
+  if (StorageData == null) return <></>;
   return (
     <div
       style={{
@@ -55,10 +36,10 @@ export const EnderContainer = ({ enderData }: { enderData: any }) => {
         gap: "20px",
         width: "900px",
         flexWrap: "wrap",
-        marginTop: "40px",
+        marginTop: "20px",
       }}
     >
-      {Object.values(enderContents).map((data, index) => (
+      {Object.values(StorageData).map((data: any, index) => (
         <div
           className="group relative cursor-pointer"
           style={{
@@ -67,13 +48,6 @@ export const EnderContainer = ({ enderData }: { enderData: any }) => {
             borderRadius: "8px",
             minHeight: "75px",
             minWidth: "75px",
-            marginBottom:
-              (35 < index && index < 45) ||
-              (80 < index && index < 90) ||
-              (125 < index && index < 135) ||
-              (170 < index && index < 180)
-                ? "20px"
-                : "0px",
           }}
           onMouseEnter={(e) => handleMouseEnter(index, e)}
           onMouseMove={handleMouseMove}
@@ -142,6 +116,8 @@ export const EnderContainer = ({ enderData }: { enderData: any }) => {
           )}
         </div>
       ))}
+      {(StorageData as []).filter((data: any) => data["tag"] != null).length <
+        1 && <p>This is not a bug! Storage is empty!</p>}
     </div>
   );
 };

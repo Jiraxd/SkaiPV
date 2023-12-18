@@ -38,7 +38,6 @@ export const BackpacksContainer = ({
   const updateMousePosition = (event: React.MouseEvent<HTMLDivElement>) => {
     setMousePosition({ x: event.clientX, y: event.clientY });
   };
-
   useEffect(() => {
     const fetchData = async () => {
       let bpIcons: any[] = [];
@@ -63,8 +62,6 @@ export const BackpacksContainer = ({
           bpData.push(backpackData[`${i}`]);
         }
       }
-      console.log(bpIcons);
-      console.log(bpData);
       setBpIcons(bpIcons);
       setBpData(bpData);
     };
@@ -101,7 +98,7 @@ export const BackpacksContainer = ({
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               key={index}
-              onClick={() => setClickedIndex(index)}
+              onClick={() => data != undefined && setClickedIndex(index)}
             >
               {data != undefined && (
                 <Image
@@ -141,6 +138,7 @@ export const BackpacksContainer = ({
                       }}
                     >
                       <FormattedMCLine
+                        count={data[0]["Count"]}
                         linexd={data[0]["tag"]["display"]["Name"] as string}
                         isHeader={true}
                       />
@@ -150,7 +148,11 @@ export const BackpacksContainer = ({
                     {Object.values(data[0]["tag"]["display"]["Lore"]).map(
                       (value: any, index: number) => (
                         <>
-                          <FormattedMCLine linexd={value} isHeader={false} />
+                          <FormattedMCLine
+                            count={data[0]["Count"]}
+                            linexd={value}
+                            isHeader={false}
+                          />
                           <br />
                         </>
                       )
@@ -173,7 +175,10 @@ export const BackpacksContainer = ({
       ) : (
         <>
           <button
-            onClick={() => setClickedIndex(-1)}
+            onClick={() => {
+              setHoveredIndex(null);
+              setClickedIndex(-1);
+            }}
             style={{ marginTop: "15px" }}
           >
             ↺ Back

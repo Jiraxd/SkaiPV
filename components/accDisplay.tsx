@@ -166,6 +166,7 @@ export const AccDisplay = ({ playerData }: { playerData: any }) => {
                   >
                     <FormattedMCLine
                       linexd={value["tag"]["display"]["Name"] as string}
+                      count={value["Count"]}
                       isHeader={true}
                     />
                   </p>
@@ -174,7 +175,11 @@ export const AccDisplay = ({ playerData }: { playerData: any }) => {
                   {Object.values(value["tag"]["display"]["Lore"]).map(
                     (value: any, index: number) => (
                       <>
-                        <FormattedMCLine linexd={value} isHeader={false} />
+                        <FormattedMCLine
+                          count={value["Count"]}
+                          linexd={value}
+                          isHeader={false}
+                        />
                         <br />
                       </>
                     )

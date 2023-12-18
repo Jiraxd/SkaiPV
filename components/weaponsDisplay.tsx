@@ -139,6 +139,7 @@ export const WeaponsDisplay = ({ playerData }: { playerData: any }) => {
                   <FormattedMCLine
                     linexd={value["tag"]["display"]["Name"] as string}
                     isHeader={true}
+                    count={1}
                   />
                 </p>
               </div>
@@ -146,7 +147,11 @@ export const WeaponsDisplay = ({ playerData }: { playerData: any }) => {
                 {Object.values(value["tag"]["display"]["Lore"]).map(
                   (value: any, index: number) => (
                     <>
-                      <FormattedMCLine linexd={value} isHeader={false} />
+                      <FormattedMCLine
+                        linexd={value}
+                        isHeader={false}
+                        count={1}
+                      />
                       <br />
                     </>
                   )

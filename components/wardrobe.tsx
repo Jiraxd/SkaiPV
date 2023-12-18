@@ -292,6 +292,7 @@ export const WardrobeDisplay = (playerDataxd: any) => {
                     <FormattedMCLine
                       linexd={(getData() as any)["Name"] as string}
                       isHeader={true}
+                      count={1}
                     />
                   </p>
                 </div>
@@ -299,7 +300,11 @@ export const WardrobeDisplay = (playerDataxd: any) => {
                   {Object.values((getData() as any)["Lore"]).map(
                     (value: any, index: number) => (
                       <>
-                        <FormattedMCLine linexd={value} isHeader={false} />
+                        <FormattedMCLine
+                          linexd={value}
+                          isHeader={false}
+                          count={1}
+                        />
                         <br />
                       </>
                     )

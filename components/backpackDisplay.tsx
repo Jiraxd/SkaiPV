@@ -91,6 +91,7 @@ export const BackpackDisplay = ({ backpackData }: { backpackData: any }) => {
                   }}
                 >
                   <FormattedMCLine
+                    count={data["Count"]}
                     linexd={data["tag"]["display"]["Name"] as string}
                     isHeader={true}
                   />
@@ -100,7 +101,11 @@ export const BackpackDisplay = ({ backpackData }: { backpackData: any }) => {
                 {Object.values(data["tag"]["display"]["Lore"]).map(
                   (value: any, index: number) => (
                     <>
-                      <FormattedMCLine linexd={value} isHeader={false} />
+                      <FormattedMCLine
+                        count={data["Count"]}
+                        linexd={value}
+                        isHeader={false}
+                      />
                       <br />
                     </>
                   )

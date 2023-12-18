@@ -19,6 +19,9 @@ export function GetIconPath(itemData: any){
     if(itemlower.includes("infini_vacuum")){
       itemlower = "infinivacuum";
     }
+    if(itemlower.includes("potion")){
+      itemlower = "water_bottle";
+    }
     if(itemlower.includes("starred"))
       itemlower = itemlower.substring(itemlower.indexOf("_") + 1, itemlower.length);
       if(itemlower.includes("archaeologist_compass"))

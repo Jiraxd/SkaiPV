@@ -105,6 +105,7 @@ export const InventoryContainer = ({ inventoryxd }: { inventoryxd: any[] }) => {
                   <FormattedMCLine
                     linexd={data["tag"]["display"]["Name"] as string}
                     isHeader={true}
+                    count={data["Count"]}
                   />
                 </p>
               </div>
@@ -112,7 +113,11 @@ export const InventoryContainer = ({ inventoryxd }: { inventoryxd: any[] }) => {
                 {Object.values(data["tag"]["display"]["Lore"]).map(
                   (value: any, index: number) => (
                     <>
-                      <FormattedMCLine linexd={value} isHeader={false} />
+                      <FormattedMCLine
+                        linexd={value}
+                        isHeader={false}
+                        count={data["Count"]}
+                      />
                       <br />
                     </>
                   )
