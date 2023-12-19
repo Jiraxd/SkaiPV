@@ -12,7 +12,13 @@ import { FormattedMCLine } from "./FormattedLine";
 import { Spacer } from "@nextui-org/spacer";
 import Image from "next/image";
 
-export const AccDisplay = ({ playerData }: { playerData: any }) => {
+export const AccDisplay = ({
+  playerData,
+  accData,
+}: {
+  playerData: any;
+  accData: any;
+}) => {
   const [accs, setAccs] = useState<any>(null);
   const [allAccs, setAllaccs] = useState<any>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
@@ -53,10 +59,6 @@ export const AccDisplay = ({ playerData }: { playerData: any }) => {
     const encodedInv =
       playerData["inventory"]["bag_contents"]["talisman_bag"]["data"];
     const convert = async () => {
-      const accData = await fetch(`/api/accessoriesAPI`, {
-        cache: "force-cache",
-      }).then((res) => res.json());
-
       if (encodedInv != undefined) {
         const invContent = await ConvertNBTToJson(encodedInv);
         const accsPlayer = await invContent.filter((acc) => acc["tag"] != null);

@@ -42,8 +42,6 @@ export const InvDisplay = ({ playerData }: { playerData: any }) => {
   }, []);
   if (playerData["inventory"] == null)
     return <div>Player has API disabled!</div>;
-
-  console.log(playerData);
   const handleMouseEnter = (
     index: number,
     event: React.MouseEvent<HTMLDivElement>

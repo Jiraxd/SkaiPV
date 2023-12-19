@@ -57,7 +57,7 @@ export function GetIconPath(itemData: any){
       else{
       path += itemlower + "/" + itemlower + ".png";
       }
-      console.log(path);
+     // console.log(path);
       return path;
     }
 }
@@ -66,7 +66,7 @@ export function getItemPathFromName(name: string){
   let path:string = "";
     let itemlower = name.toLowerCase();
     path += itemlower + "/" + itemlower + ".png";
-    console.log(path);
+    //console.log(path);
       return path;
   
 }

@@ -31,9 +31,8 @@ export const FormattedMCLine = ({
   return (
     <>
       {data.map((value: any, index) => (
-        <>
+        <span key={crypto.randomUUID().toString()}>
           <span
-            key={crypto.randomUUID().toString()}
             style={{
               color: !isHeader
                 ? GetColorFromMCColor(line.substring(value, value + 2))
@@ -51,7 +50,7 @@ export const FormattedMCLine = ({
               {` x${count}`}
             </span>
           )}
-        </>
+        </span>
       ))}
       {addRecombed && (
         <span style={{ color: "#e668c6" }}>| RARITY UPGRADED |</span>

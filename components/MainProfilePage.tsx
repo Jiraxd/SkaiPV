@@ -14,6 +14,7 @@ import { WeaponsDisplay } from "./weaponsDisplay";
 import { AccDisplay } from "./accDisplay";
 import { InvDisplay } from "./InvDisplay";
 import Image from "next/image";
+import { PetsDisplay } from "./PetsDisplay";
 
 // MIN RES JE 1321X1080, POTOM TO CHCE PŘEDĚLAT
 export const MainProfilePage = ({
@@ -23,6 +24,7 @@ export const MainProfilePage = ({
 }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [data, setData] = useState(null);
+  const [accData, setAccData] = useState(null);
   const [skillData, setSkill] = useState(null);
   const [uuid, setuuid] = useState(null);
   const [isLoading, setLoading] = useState(true);
@@ -36,6 +38,10 @@ export const MainProfilePage = ({
       );
       setuuid(responsexd["data"]["id"]);
       const id = responsexd["data"]["id"];
+      const accData = await fetch(`/api/accessoriesAPI`, {
+        cache: "force-cache",
+      }).then((res) => res.json());
+      setAccData(accData);
       const skillData = await fetch(
         `https://api.hypixel.net/v2/resources/skyblock/skills`,
         { cache: "force-cache" }
@@ -120,7 +126,7 @@ export const MainProfilePage = ({
       localStorage.setItem("lastVisited", JSON.stringify(arrayx));
     }
   }
-
+  console.log(currentProfile);
   return (
     <>
       <div
@@ -311,23 +317,48 @@ export const MainProfilePage = ({
           ACCESSORY BAG
         </h1>
         <Spacer y={4} />
-        <div id="accessories">
-          <AccDisplay playerData={currentProfile}></AccDisplay>
+        <div>
+          <AccDisplay
+            playerData={currentProfile}
+            accData={accData}
+          ></AccDisplay>
         </div>
         <Spacer y={10} />
-        <h1
-          className={title()}
-          style={{
-            borderBottom: "4px solid green",
-            display: "inline-block",
-            paddingBottom: "8px",
-          }}
-        >
-          INVENTORY
-        </h1>
+        <div id="accessories">
+          <h1
+            className={title()}
+            style={{
+              borderBottom: "4px solid green",
+              display: "inline-block",
+              paddingBottom: "8px",
+            }}
+          >
+            INVENTORY
+          </h1>
+        </div>
         <Spacer y={4} />
         <div id="inventory">
           <InvDisplay playerData={currentProfile}></InvDisplay>
+        </div>
+        <Spacer y={10} />
+        <div id="pets">
+          <h1
+            className={title()}
+            style={{
+              borderBottom: "4px solid green",
+              display: "inline-block",
+              paddingBottom: "8px",
+            }}
+          >
+            PETS
+          </h1>
+        </div>
+        <Spacer y={4} />
+        <div>
+          <PetsDisplay
+            petData={currentProfile["pets_data"]["pets"]}
+            profileData={currentProfile}
+          ></PetsDisplay>
         </div>
         <Spacer y={96} />
         <Spacer y={96} />
