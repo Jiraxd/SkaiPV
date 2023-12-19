@@ -14,6 +14,10 @@ module.exports = {
             {
                 hostname: "s.namemc.com",
                 protocol: 'https',
+            },
+            {
+                hostname: "sky.shiiyu.moe",
+                protocol: 'https',
             }
         ],
     },

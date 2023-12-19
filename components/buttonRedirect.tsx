@@ -10,17 +10,15 @@ export const ButtonRedirect = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setInterval(() => {
-      const volenemamnervyarray = localStorage.getItem("lastVisited");
-      if (volenemamnervyarray !== null) {
-        const parsedData: UserDisplay[] = JSON.parse(volenemamnervyarray);
-        setValuestoloopthru(parsedData);
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
-      }
-    }, 2000);
-  });
+    const volenemamnervyarray = localStorage.getItem("lastVisited");
+    if (volenemamnervyarray !== null) {
+      const parsedData: UserDisplay[] = JSON.parse(volenemamnervyarray);
+      setValuestoloopthru(parsedData);
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
 
   if (isLoading) return <p>Loading...</p>;
   return (

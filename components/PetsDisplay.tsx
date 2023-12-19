@@ -1,17 +1,18 @@
 import { PET_STATS } from "@/constants/pet-stats";
-import { PET_ITEMS } from "@/constants/pets";
+import { PET_DATA, PET_ITEMS } from "@/constants/pets";
 import {
   GetBGColorItem,
   GetColorFromRarity,
   RARITY_COLORS,
 } from "@/utils/ColorStuff";
-import { createPetInstance, getPetLevel } from "@/utils/PetUtils";
+import { getPetLevel } from "@/utils/PetUtils";
 import { FormatNumber } from "@/utils/formatNumber";
 import { GetIconPath } from "@/utils/getIconPath";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { isFunctionDeclaration } from "typescript";
 import { FormattedMCLine } from "./FormattedLine";
+import { Spacer } from "@nextui-org/spacer";
 
 interface IStringIndex {
   [key: string]: any;
@@ -54,7 +55,12 @@ export const PetsDisplay = ({
       let lore: string[] = [];
       let petItemLore: string[] = [];
       const activePet = item;
-      const pet = createPetInstance(activePet, profileData);
+      const pet = new (PET_STATS as IStringIndex)[activePet["type"]](
+        activePet["tier"],
+        getPetLevel(activePet["exp"], activePet["tier"], 100),
+        null,
+        profileData
+      );
       const petstats = pet?.stats;
       if (pet) {
         if (activePet["heldItem"]) {
@@ -161,7 +167,8 @@ export const PetsDisplay = ({
           lore.push(`§7Candy Used: §e${activePet["candyUsed"] || 0} §6/ §e10`);
         }
       }
-      petList.push({ activePet, pet, lore });
+      const head = (PET_DATA as IStringIndex)[activePet["type"]]["head"];
+      petList.push({ activePet, pet, lore, head });
     });
     setPetList(petList);
   }, []);
@@ -204,7 +211,7 @@ export const PetsDisplay = ({
                 onMouseLeave={handleMouseLeave}
               >
                 <Image
-                  src={`${GetIconPath(activePet)}`}
+                  src={`https://sky.shiiyu.moe${activePetxd["head"]}`}
                   alt={activePet}
                   width={45}
                   height={45}
@@ -284,6 +291,96 @@ export const PetsDisplay = ({
         ) : (
           <div>Player has no active pet!</div>
         )}
+      </div>
+      <Spacer y={20}></Spacer>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "20px",
+          flexWrap: "wrap",
+          width: "85%",
+        }}
+      >
+        {Object.values(
+          petlistFinished.filter((f) => f["activePet"]["active"] != true)
+        ).map((data: any, index) => (
+          <div
+            className="group relative cursor-pointer"
+            style={{
+              backgroundColor: GetColorFromRarity(data["activePet"]["tier"]),
+              padding: "15px",
+              borderRadius: "8px",
+            }}
+            onMouseEnter={(e) => handleMouseEnter(index, e)}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            key={index}
+          >
+            <Image
+              src={`https://sky.shiiyu.moe${data["head"]}`}
+              alt={index.toString()}
+              width={45}
+              height={45}
+            />
+            {hoveredIndex === index && (
+              <div
+                className="fixed top-0 left-0 rounded"
+                style={{
+                  left: `${mousePosition.x}px`,
+                  transform: "translateX(-105%) translateY(-75%)",
+                  top: `${mousePosition.y}px`,
+                  zIndex: "1500",
+                  borderRadius: "8px",
+                  backgroundColor: "#0f0f0f",
+                  maxWidth: "300px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <div
+                  style={{
+                    backgroundColor: GetColorFromRarity(
+                      data["activePet"]["tier"]
+                    ),
+                    padding: "15px",
+                    width: "100%",
+                    borderTopLeftRadius: "8px",
+                    borderTopRightRadius: "8px",
+                    justifyContent: "center",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      color: "#000000",
+                      fontSize: "20px",
+                    }}
+                  >
+                    <span>
+                      {" "}
+                      {`[LVL ${data["pet"]["level"]["level"]}] ` +
+                        data["activePet"]["type"]}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-4">
+                  {Object.values(data["lore"]).map(
+                    (value: any, index: number) => (
+                      <>
+                        <FormattedMCLine
+                          count={1}
+                          linexd={value}
+                          isHeader={false}
+                        />
+                        <br />
+                      </>
+                    )
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -171,10 +171,8 @@ export const PET_DATA = {
     emoji: "🌋",
   },
   FLYING_FISH: {
-    head: {
-      default: "/head/40cd71fbbbbb66c7baf7881f415c64fa84f6504958a57ccdb8589252647ea",
-      mythic: "/head/b0e2363c2d41a9d323ba625de8c0637063a36fe85a045de275a7b7739ded6051",
-    },
+    head: "/head/40cd71fbbbbb66c7baf7881f415c64fa84f6504958a57ccdb8589252647ea",
+    mythic: "/head/b0e2363c2d41a9d323ba625de8c0637063a36fe85a045de275a7b7739ded6051",
     type: "fishing",
     maxTier: "mythic",
     maxLevel: 100,
