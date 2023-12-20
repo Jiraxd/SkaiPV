@@ -253,7 +253,7 @@ export const PetsDisplay = ({
             >
               Bonus:{" "}
               {Object.values(activePetxd["realLore"]).map((value, index) => (
-                <span>
+                <span key={index}>
                   <FormattedMCLine
                     linexd={value}
                     isHeader={false}
