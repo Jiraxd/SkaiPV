@@ -211,7 +211,7 @@ export const PetsDisplay = ({
                 onMouseLeave={handleMouseLeave}
               >
                 <Image
-                  src={`https://sky.shiiyu.moe${activePetxd["head"]}`}
+                  src={`https://mc-heads.net${activePetxd["head"]}`}
                   alt={activePet}
                   width={45}
                   height={45}
@@ -318,7 +318,7 @@ export const PetsDisplay = ({
             key={index}
           >
             <Image
-              src={`https://sky.shiiyu.moe${data["head"]}`}
+              src={`https://mc-heads.net${data["head"]}`}
               alt={index.toString()}
               width={45}
               height={45}
