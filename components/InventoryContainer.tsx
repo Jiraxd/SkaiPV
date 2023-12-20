@@ -70,8 +70,8 @@ export const InventoryContainer = ({ inventoryxd }: { inventoryxd: any[] }) => {
             <Image
               src={`${GetIconPath(data)}`}
               alt={index.toString()}
-              width={42}
-              height={42}
+              width={45}
+              height={45}
             />
           )}
           {hoveredIndex === index && data["tag"] != null && (
