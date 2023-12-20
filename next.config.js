@@ -18,6 +18,10 @@ module.exports = {
             {
                 hostname: "sky.shiiyu.moe",
                 protocol: 'https',
+            },
+            {
+                hostname: "raw.githubusercontent.com",
+                protocol: 'https',
             }
         ],
     },

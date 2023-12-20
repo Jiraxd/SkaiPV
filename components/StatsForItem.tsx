@@ -4,7 +4,7 @@ import { stat } from "@/utils/statsFromItem";
 import { STATS_DATA } from "../constants/stats";
 import { useEffect, useState } from "react";
 
-function getColorForStat(statName: string): string {
+export function getColorForStat(statName: string): string {
   const stat = Object.values(STATS_DATA).find(
     (value) => value.nameLore === statName
   );

@@ -1,3 +1,13 @@
+import vanilla from "skyblock-assets/matchers/vanilla.json";
+import furfsky_reborn from "skyblock-assets/matchers/furfsky_reborn.json";
+import furfsky from "skyblock-assets/matchers/furfsky.json";
+import packshq from 'skyblock-assets/matchers/packshq.json';
+import hypixel from 'skyblock-assets/matchers/hypixel+.json';
+import world from 'skyblock-assets/matchers/worlds_and_beyond.json';
+import rnbw from 'skyblock-assets/matchers/rnbw.json';
+import ectoplasm from 'skyblock-assets/matchers/ectoplasm.json';
+import * as skyblockAssets from 'skyblock-assets';
+
 export function GetIconPath(itemData: any){
   if(itemData["tag"] === null || itemData["tag"] === undefined) return "/question_mark.png";
     const item = itemData["tag"]["ExtraAttributes"]["id"] as string;
@@ -14,52 +24,26 @@ export function GetIconPath(itemData: any){
         path = "https://mc-heads.net/head/" + path + ".png";
         return path;
       }
-    let path:string = "/";
-    let itemlower = item.toLowerCase();
-    if(itemlower.includes("infini_vacuum")){
-      itemlower = "infinivacuum";
-    }
-    if(itemlower.includes("potion")){
-      itemlower = "water_bottle";
-    }
-    if(itemlower.includes("starred"))
-      itemlower = itemlower.substring(itemlower.indexOf("_") + 1, itemlower.length);
-      if(itemlower.includes("archaeologist_compass"))
-      itemlower = "compass";
-    if(itemlower.includes("boots") || itemlower.includes("leggings") || itemlower.includes("chestplate") || itemlower.includes("helmet")){
-        let armorName = itemlower.substring(0,itemlower.indexOf("_"));
-        if(itemlower.includes("dragon")){
-            armorName += "_dragon";
-        }
-        
-        let piece = "";
-        if(itemlower.includes("dragon")){
-         piece = itemlower.substring(itemlower.lastIndexOf("_"), itemlower.length);
-        }
-        else if(itemlower.includes("perfect")){
-          piece = itemlower.substring(itemlower.lastIndexOf("_"), itemlower.length) + itemlower.substring(itemlower.indexOf("_"),itemlower.lastIndexOf("_"));
-        }
-        else{
-        piece = itemlower.substring(itemlower.indexOf("_"), itemlower.length);
-        }
-        if(itemlower.includes("hunter")){
-          path += "hunter_armor/icons/" + itemlower.substring(0, itemlower.indexOf("_")) + "/" + armorName + piece + ".png";
-        }
-        else{
-        path += armorName + "_armor/icons/" + armorName + piece + ".png";
-        }
-        return path;
-    }
-    else{
-      if(itemlower.includes("hoe_wheat")){
-        path += "farming_tools" + "/" + itemlower + ".png";
+      if(item.toLowerCase().includes("compass")){
+        return "/compass/compass.png";
       }
-      else{
-      path += itemlower + "/" + itemlower + ".png";
-      }
-     // console.log(path);
-      return path;
-    }
+      const regex = /§[a-zA-Z0-9]/g;  
+      if(item.toLowerCase().includes("glacial_scythe")) return "/glacial_scythe/glacial_scythe.png";
+      const Itemname = itemData["tag"]["display"]["Name"].replace(regex, '').replaceAll("✪", "").replaceAll("⚚", "");
+      const itemTextureUrl = skyblockAssets.getTextureDir({
+        id: `${itemData["id"]}`,
+        nbt: {
+            ExtraAttributes: {
+                id: `${item}`
+            },
+            display: {
+              Name: `${Itemname}`
+          }
+        },
+        packs: [ furfsky_reborn ,furfsky,rnbw, ectoplasm,world,packshq,hypixel, vanilla ],
+    })
+    const realurl = "/packs/" + itemTextureUrl.substring(itemTextureUrl.indexOf("textures") + 9, itemTextureUrl.length);
+    return realurl;
 }
 
 export function getItemPathFromName(name: string){

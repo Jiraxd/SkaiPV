@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { isFunctionDeclaration } from "typescript";
 import { FormattedMCLine } from "./FormattedLine";
 import { Spacer } from "@nextui-org/spacer";
+import { getColorForStat } from "./StatsForItem";
 
 interface IStringIndex {
   [key: string]: any;
@@ -62,6 +63,8 @@ export const PetsDisplay = ({
         profileData
       );
       const petstats = pet?.stats;
+      let statsLore = [];
+      let realLore = [];
       if (pet) {
         if (activePet["heldItem"]) {
           const petitem = PET_ITEMS.find(
@@ -98,7 +101,7 @@ export const PetsDisplay = ({
             }
             petItemLore.push(
               "",
-              `§6Held Item: §${
+              `§6Held Item: ${
                 RARITY_COLORS.find(
                   (f) => f.rarity === petitem.tier.toLowerCase()
                 )?.color
@@ -107,8 +110,16 @@ export const PetsDisplay = ({
             petItemLore.push(petitem.description);
           }
         }
-        const stats = pet.lore(petstats);
-        for (const line of stats) {
+        statsLore = pet.lore(petstats);
+        for (const line of statsLore) {
+          const real = (line as string).replace(
+            /§[a-zA-Z0-9]/,
+            "§" +
+              getColorForStat(
+                line.substring(line.indexOf("§") + 2, line.indexOf(":"))
+              )
+          );
+          realLore.push(real);
           lore.push(line);
         }
 
@@ -168,17 +179,21 @@ export const PetsDisplay = ({
         }
       }
       const head = (PET_DATA as IStringIndex)[activePet["type"]]["head"];
-      petList.push({ activePet, pet, lore, head });
+      petList.push({ activePet, pet, lore, head, realLore });
     });
     setPetList(petList);
   }, []);
   if (petlistFinished == null) return <></>;
-  console.log(petlistFinished);
+  const uniquePets: string[] = [];
+  petlistFinished.forEach((p) => {
+    if (!uniquePets.includes(p["activePet"]["type"])) uniquePets.push(p);
+  });
   const activePetxd = petlistFinished.find(
     (p) => p["activePet"]["active"] === true
   );
   const activePet = activePetxd["activePet"];
   const loreActive = activePetxd["lore"];
+  console.log(activePetxd);
   return (
     <div style={{ marginTop: "20px" }}>
       <div
@@ -189,14 +204,18 @@ export const PetsDisplay = ({
         }}
       >
         <p>
-          Unique Pets: <span style={{ color: "white" }}>0/0</span>
+          Unique Pets:{" "}
+          <span style={{ color: "white" }}>
+            {uniquePets.length + "/" + Object.values(PET_DATA).length}
+          </span>
         </p>
       </div>
-      <br />
+      <Spacer y={6}></Spacer>
       <div>
         {activePet ? (
           <div>
-            <p>Active Pet</p>
+            <p style={{ fontWeight: "bold", fontSize: "26px" }}>Active Pet</p>
+            <Spacer y={4}></Spacer>
             <div style={{ display: "flex" }}>
               <div
                 className="group relative cursor-pointer"
@@ -224,6 +243,7 @@ export const PetsDisplay = ({
                 <span>{activePet["type"]}</span>
               </p>
             </div>
+            <Spacer y={4}></Spacer>
             <p
               style={{
                 color: "rgba(255,255,255,0.7)",
@@ -232,6 +252,16 @@ export const PetsDisplay = ({
               }}
             >
               Bonus:{" "}
+              {Object.values(activePetxd["realLore"]).map((value, index) => (
+                <span>
+                  <FormattedMCLine
+                    linexd={value}
+                    isHeader={false}
+                    count={1}
+                  ></FormattedMCLine>
+                  {index < activePetxd["realLore"].length - 1 ? " // " : ""}
+                </span>
+              ))}
             </p>
             {hoveredIndex === -2 && (
               <div
@@ -292,7 +322,7 @@ export const PetsDisplay = ({
           <div>Player has no active pet!</div>
         )}
       </div>
-      <Spacer y={20}></Spacer>
+      <Spacer y={12}></Spacer>
       <div
         style={{
           display: "flex",

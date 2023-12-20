@@ -38,6 +38,7 @@ export const InventoryContainer = ({ inventoryxd }: { inventoryxd: any[] }) => {
   }, []);
   if (inventory == null) return <></>;
   if (inventory.length < 1) return <></>;
+  console.log(inventory);
   return (
     <div
       style={{
@@ -69,8 +70,8 @@ export const InventoryContainer = ({ inventoryxd }: { inventoryxd: any[] }) => {
             <Image
               src={`${GetIconPath(data)}`}
               alt={index.toString()}
-              width={45}
-              height={45}
+              width={42}
+              height={42}
             />
           )}
           {hoveredIndex === index && data["tag"] != null && (
