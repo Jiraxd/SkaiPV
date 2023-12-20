@@ -41,7 +41,7 @@ export default function RootLayout({
       >
         <div
           style={{
-            background: "url(/bg.jpg)",
+            background: "url(/bg.webp)",
             backgroundSize: "cover",
             backgroundAttachment: "fixed",
             minWidth: "100%",
