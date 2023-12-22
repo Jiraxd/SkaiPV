@@ -185,15 +185,37 @@ export const PetsDisplay = ({
   }, []);
   if (petlistFinished == null) return <></>;
   const uniquePets: string[] = [];
+  let petscore: number = 0;
+  let bonusmf = 0;
   petlistFinished.forEach((p) => {
     if (!uniquePets.includes(p["activePet"]["type"])) uniquePets.push(p);
   });
+  console.log(uniquePets);
+  uniquePets.forEach((p: any) => {
+    if (p["pet"]["level"]["level"] === 100) petscore++;
+    if (p["activePet"]["tier"] === "COMMON") petscore++;
+    else if (p["activePet"]["tier"] === "UNCOMMON") petscore = petscore + 2;
+    else if (p["activePet"]["tier"] === "RARE") petscore = petscore + 3;
+    else if (p["activePet"]["tier"] === "EPIC") petscore = petscore + 4;
+    else if (p["activePet"]["tier"] === "LEGENDARY") petscore = petscore + 5;
+    else if (p["activePet"]["tier"] === "MYTHIC") petscore = petscore + 6;
+  });
+  if (petscore >= 10 && petscore < 25) bonusmf = 1;
+  else if (petscore >= 25 && petscore < 50) bonusmf = 2;
+  else if (petscore >= 50 && petscore < 75) bonusmf = 3;
+  else if (petscore >= 50 && petscore < 100) bonusmf = 4;
+  else if (petscore >= 75 && petscore < 130) bonusmf = 5;
+  else if (petscore >= 100 && petscore < 175) bonusmf = 6;
+  else if (petscore >= 130 && petscore < 225) bonusmf = 7;
+  else if (petscore >= 175 && petscore < 275) bonusmf = 8;
+  else if (petscore >= 225 && petscore < 325) bonusmf = 9;
+  else if (petscore >= 325) bonusmf = 10;
   const activePetxd = petlistFinished.find(
     (p) => p["activePet"]["active"] === true
   );
   const activePet = activePetxd["activePet"];
   const loreActive = activePetxd["lore"];
-  console.log(activePetxd);
+
   return (
     <div style={{ marginTop: "20px" }}>
       <div
@@ -207,6 +229,14 @@ export const PetsDisplay = ({
           Unique Pets:{" "}
           <span style={{ color: "white" }}>
             {uniquePets.length + "/" + Object.values(PET_DATA).length}
+          </span>
+        </p>
+        <p>
+          Pet Score:{" "}
+          <span style={{ color: "white" }}>
+            {petscore + " " + `(+${bonusmf}`}
+            <span style={{ color: "#33aec3" }}>{" Magic Find "}</span>
+            {")"}
           </span>
         </p>
       </div>
@@ -243,6 +273,15 @@ export const PetsDisplay = ({
                 <span>{activePet["type"]}</span>
               </p>
             </div>
+            <p
+              style={{
+                padding: "13px",
+                paddingTop: "1px",
+                fontWeight: "bold",
+              }}
+            >
+              {"LVL " + activePetxd["pet"]["level"]["level"]}
+            </p>
             <Spacer y={4}></Spacer>
             <p
               style={{
@@ -335,81 +374,84 @@ export const PetsDisplay = ({
         {Object.values(
           petlistFinished.filter((f) => f["activePet"]["active"] != true)
         ).map((data: any, index) => (
-          <div
-            className="group relative cursor-pointer"
-            style={{
-              backgroundColor: GetColorFromRarity(data["activePet"]["tier"]),
-              padding: "15px",
-              borderRadius: "8px",
-            }}
-            onMouseEnter={(e) => handleMouseEnter(index, e)}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            key={index}
-          >
-            <Image
-              src={`https://mc-heads.net${data["head"]}`}
-              alt={index.toString()}
-              width={45}
-              height={45}
-            />
-            {hoveredIndex === index && (
-              <div
-                className="fixed top-0 left-0 rounded"
-                style={{
-                  left: `${mousePosition.x}px`,
-                  transform: "translateX(-105%) translateY(-75%)",
-                  top: `${mousePosition.y}px`,
-                  zIndex: "1500",
-                  borderRadius: "8px",
-                  backgroundColor: "#0f0f0f",
-                  maxWidth: "300px",
-                  flexWrap: "wrap",
-                }}
-              >
+          <>
+            <div
+              className="group relative cursor-pointer"
+              style={{
+                backgroundColor: GetColorFromRarity(data["activePet"]["tier"]),
+                padding: "15px",
+                borderRadius: "8px",
+                marginBottom: "16px",
+              }}
+              onMouseEnter={(e) => handleMouseEnter(index, e)}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              key={index}
+            >
+              <Image
+                src={`https://mc-heads.net${data["head"]}`}
+                alt={index.toString()}
+                width={45}
+                height={45}
+              />
+              {hoveredIndex === index && (
                 <div
+                  className="fixed top-0 left-0 rounded"
                   style={{
-                    backgroundColor: GetColorFromRarity(
-                      data["activePet"]["tier"]
-                    ),
-                    padding: "15px",
-                    width: "100%",
-                    borderTopLeftRadius: "8px",
-                    borderTopRightRadius: "8px",
-                    justifyContent: "center",
-                    textAlign: "center",
+                    left: `${mousePosition.x}px`,
+                    transform: "translateX(-105%) translateY(-75%)",
+                    top: `${mousePosition.y}px`,
+                    zIndex: "1500",
+                    borderRadius: "8px",
+                    backgroundColor: "#0f0f0f",
+                    maxWidth: "300px",
+                    flexWrap: "wrap",
                   }}
                 >
                   <div
                     style={{
-                      color: "#000000",
-                      fontSize: "20px",
+                      backgroundColor: GetColorFromRarity(
+                        data["activePet"]["tier"]
+                      ),
+                      padding: "15px",
+                      width: "100%",
+                      borderTopLeftRadius: "8px",
+                      borderTopRightRadius: "8px",
+                      justifyContent: "center",
+                      textAlign: "center",
                     }}
                   >
-                    <span>
-                      {" "}
-                      {`[LVL ${data["pet"]["level"]["level"]}] ` +
-                        data["activePet"]["type"]}
-                    </span>
+                    <div
+                      style={{
+                        color: "#000000",
+                        fontSize: "20px",
+                      }}
+                    >
+                      <span>
+                        {" "}
+                        {`[LVL ${data["pet"]["level"]["level"]}] ` +
+                          data["activePet"]["type"]}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    {Object.values(data["lore"]).map(
+                      (value: any, index: number) => (
+                        <>
+                          <FormattedMCLine
+                            count={1}
+                            linexd={value}
+                            isHeader={false}
+                          />
+                          <br />
+                        </>
+                      )
+                    )}
                   </div>
                 </div>
-                <div className="p-4">
-                  {Object.values(data["lore"]).map(
-                    (value: any, index: number) => (
-                      <>
-                        <FormattedMCLine
-                          count={1}
-                          linexd={value}
-                          isHeader={false}
-                        />
-                        <br />
-                      </>
-                    )
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          </>
         ))}
       </div>
     </div>
