@@ -38,7 +38,6 @@ export const InventoryContainer = ({ inventoryxd }: { inventoryxd: any[] }) => {
   }, []);
   if (inventory == null) return <></>;
   if (inventory.length < 1) return <></>;
-  console.log(inventory);
   return (
     <div
       style={{

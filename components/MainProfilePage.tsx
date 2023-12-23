@@ -15,6 +15,7 @@ import { AccDisplay } from "./accDisplay";
 import { InvDisplay } from "./InvDisplay";
 import Image from "next/image";
 import { PetsDisplay } from "./PetsDisplay";
+import { SlayersDisplay } from "./slayersDisplay";
 
 // MIN RES JE 1321X1080, POTOM TO CHCE PŘEDĚLAT
 export const MainProfilePage = ({
@@ -126,7 +127,6 @@ export const MainProfilePage = ({
       localStorage.setItem("lastVisited", JSON.stringify(arrayx));
     }
   }
-  console.log(currentProfile);
   return (
     <>
       <div
@@ -359,6 +359,23 @@ export const MainProfilePage = ({
             petData={currentProfile["pets_data"]["pets"]}
             profileData={currentProfile}
           ></PetsDisplay>
+        </div>
+        <Spacer y={10} />
+        <div id="slayer">
+          <h1
+            className={title()}
+            style={{
+              borderBottom: "4px solid green",
+              display: "inline-block",
+              paddingBottom: "8px",
+            }}
+          >
+            SLAYERS
+          </h1>
+        </div>
+        <Spacer y={4} />
+        <div>
+          <SlayersDisplay profileData={currentProfile}></SlayersDisplay>
         </div>
         <Spacer y={96} />
         <Spacer y={96} />

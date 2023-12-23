@@ -190,7 +190,6 @@ export const PetsDisplay = ({
   petlistFinished.forEach((p) => {
     if (!uniquePets.includes(p["activePet"]["type"])) uniquePets.push(p);
   });
-  console.log(uniquePets);
   uniquePets.forEach((p: any) => {
     if (p["pet"]["level"]["level"] === 100) petscore++;
     if (p["activePet"]["tier"] === "COMMON") petscore++;
@@ -374,84 +373,82 @@ export const PetsDisplay = ({
         {Object.values(
           petlistFinished.filter((f) => f["activePet"]["active"] != true)
         ).map((data: any, index) => (
-          <>
-            <div
-              className="group relative cursor-pointer"
-              style={{
-                backgroundColor: GetColorFromRarity(data["activePet"]["tier"]),
-                padding: "15px",
-                borderRadius: "8px",
-                marginBottom: "16px",
-              }}
-              onMouseEnter={(e) => handleMouseEnter(index, e)}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              key={index}
-            >
-              <Image
-                src={`https://mc-heads.net${data["head"]}`}
-                alt={index.toString()}
-                width={45}
-                height={45}
-              />
-              {hoveredIndex === index && (
+          <div
+            className="group relative cursor-pointer"
+            style={{
+              backgroundColor: GetColorFromRarity(data["activePet"]["tier"]),
+              padding: "15px",
+              borderRadius: "8px",
+              marginBottom: "16px",
+            }}
+            onMouseEnter={(e) => handleMouseEnter(index, e)}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            key={index}
+          >
+            <Image
+              src={`https://mc-heads.net${data["head"]}`}
+              alt={index.toString()}
+              width={45}
+              height={45}
+            />
+            {hoveredIndex === index && (
+              <div
+                className="fixed top-0 left-0 rounded"
+                style={{
+                  left: `${mousePosition.x}px`,
+                  transform: "translateX(-105%) translateY(-75%)",
+                  top: `${mousePosition.y}px`,
+                  zIndex: "1500",
+                  borderRadius: "8px",
+                  backgroundColor: "#0f0f0f",
+                  maxWidth: "300px",
+                  flexWrap: "wrap",
+                }}
+              >
                 <div
-                  className="fixed top-0 left-0 rounded"
                   style={{
-                    left: `${mousePosition.x}px`,
-                    transform: "translateX(-105%) translateY(-75%)",
-                    top: `${mousePosition.y}px`,
-                    zIndex: "1500",
-                    borderRadius: "8px",
-                    backgroundColor: "#0f0f0f",
-                    maxWidth: "300px",
-                    flexWrap: "wrap",
+                    backgroundColor: GetColorFromRarity(
+                      data["activePet"]["tier"]
+                    ),
+                    padding: "15px",
+                    width: "100%",
+                    borderTopLeftRadius: "8px",
+                    borderTopRightRadius: "8px",
+                    justifyContent: "center",
+                    textAlign: "center",
                   }}
                 >
                   <div
                     style={{
-                      backgroundColor: GetColorFromRarity(
-                        data["activePet"]["tier"]
-                      ),
-                      padding: "15px",
-                      width: "100%",
-                      borderTopLeftRadius: "8px",
-                      borderTopRightRadius: "8px",
-                      justifyContent: "center",
-                      textAlign: "center",
+                      color: "#000000",
+                      fontSize: "20px",
                     }}
                   >
-                    <div
-                      style={{
-                        color: "#000000",
-                        fontSize: "20px",
-                      }}
-                    >
-                      <span>
-                        {" "}
-                        {`[LVL ${data["pet"]["level"]["level"]}] ` +
-                          data["activePet"]["type"]}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    {Object.values(data["lore"]).map(
-                      (value: any, index: number) => (
-                        <>
-                          <FormattedMCLine
-                            count={1}
-                            linexd={value}
-                            isHeader={false}
-                          />
-                          <br />
-                        </>
-                      )
-                    )}
+                    <span>
+                      {" "}
+                      {`[LVL ${data["pet"]["level"]["level"]}] ` +
+                        data["activePet"]["type"]}
+                    </span>
                   </div>
                 </div>
-              )}
-            </div>
-          </>
+                <div className="p-4">
+                  {Object.values(data["lore"]).map(
+                    (value: any, index: number) => (
+                      <>
+                        <FormattedMCLine
+                          count={1}
+                          linexd={value}
+                          isHeader={false}
+                        />
+                        <br />
+                      </>
+                    )
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         ))}
       </div>
     </div>

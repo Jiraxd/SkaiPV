@@ -1,7 +1,7 @@
 "use client";
 import { GetColorFromMCColor } from "@/utils/ColorStuff";
 import { stat } from "@/utils/statsFromItem";
-import { STATS_DATA } from "../constants/stats";
+import { HIDDEN_STATS, STATS_DATA } from "../constants/stats";
 import { useEffect, useState } from "react";
 
 export function getColorForStat(statName: string): string {
@@ -34,43 +34,43 @@ export const ShowStats = ({ pData }: { pData: any }) => {
 
     Object.values(pData).forEach((value: any) => {
       for (const valuexd of Object.values(value["tag"]["display"]["Lore"])) {
-        console.log(valuexd);
         if ((valuexd as string).includes("[")) break;
         if (!(valuexd as string).includes("Gear Score")) {
           if (valuexd === "") break;
           const line = (valuexd as string).replace(/§l/g, "");
           const name = line.substring(line.indexOf("§") + 2, line.indexOf(":"));
-          let value: number = 0;
+          if (!Object.values(HIDDEN_STATS).find((value) => value === name)) {
+            let value: number = 0;
 
-          const substringxd = line.substring(
-            line.indexOf(":") + 1,
-            line.length
-          );
-          if (line.indexOf("(") === -1)
-            value = parseInt(
-              substringxd.substring(
-                substringxd.indexOf("§") + 2,
-                substringxd.length
-              )
+            const substringxd = line.substring(
+              line.indexOf(":") + 1,
+              line.length
             );
-          else
-            value = parseInt(
-              substringxd.substring(
-                substringxd.indexOf("§") + 2,
-                substringxd.indexOf("(")
-              )
-            );
-          console.log(name);
-          const valuestat: stat = {
-            name: name,
-            value: value,
-            color: getColorForStat(name),
-            shortName: getShortName(name),
-          };
+            if (line.indexOf("(") === -1)
+              value = parseInt(
+                substringxd.substring(
+                  substringxd.indexOf("§") + 2,
+                  substringxd.length
+                )
+              );
+            else
+              value = parseInt(
+                substringxd.substring(
+                  substringxd.indexOf("§") + 2,
+                  substringxd.indexOf("(")
+                )
+              );
+            const valuestat: stat = {
+              name: name,
+              value: value,
+              color: getColorForStat(name),
+              shortName: getShortName(name),
+            };
 
-          const statFromList = list.find((f) => f.name === valuestat.name);
-          if (statFromList) statFromList.value += valuestat.value;
-          else list.push(valuestat);
+            const statFromList = list.find((f) => f.name === valuestat.name);
+            if (statFromList) statFromList.value += valuestat.value;
+            else list.push(valuestat);
+          }
         }
       }
     });

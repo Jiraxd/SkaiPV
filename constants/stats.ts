@@ -221,17 +221,18 @@ export const STATS_DATA = {
 };
 
 export const HIDDEN_STATS = [
-  "alchemy_wisdom",
-  "carpentry_wisdom",
-  "combat_wisdom",
-  "enchanting_wisdom",
-  "farming_wisdom",
-  "fishing_wisdom",
-  "foraging_wisdom",
-  "mining_wisdom",
-  "runecrafting_wisdom",
-  "social_wisdom",
+  "Alchemy Wisdom",
+  "Carpentry Wisdom",
+  "Combat Wisdom",
+  "Enchanting Wisdom",
+  "Farming Wisdom",
+  "Fishing Wisdom",
+  "Foraging Wisdom",
+  "Mining Wisdom",
+  "Runecrafting Wisdom",
+  "Social Wisdom",
 ];
+
 
 const symbols = {
   powder: "᠅",
