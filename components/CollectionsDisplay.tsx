@@ -52,6 +52,7 @@ export const CollectionsDisplay = ({
             {Object.entries(value["items"]).map(
               ([itemName, valueItem]: [string, any]) => (
                 <Tooltip
+                  key={itemName}
                   showArrow={true}
                   content={
                     (profileData["collection"][itemName]
@@ -59,7 +60,7 @@ export const CollectionsDisplay = ({
                       : 0) + " collected"
                   }
                 >
-                  <div key={itemName} style={{ display: "inline-block" }}>
+                  <div style={{ display: "inline-block" }}>
                     <Image
                       src={getItemPathFromName(itemName, valueItem["name"])}
                       width={32}
