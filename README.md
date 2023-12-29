@@ -19,12 +19,15 @@ This website allows you to view player profiles for the game Hypixel SkyBlock us
 ## Getting Started
 
 Clone the repo
+
 `git clone https://github.com/Jiraxd/SkaiPV.git`
 
-Install dependencies  
+Install dependencies
+
 `npm install`
 
 Run the dev server
+
 `npm run dev`
 
 Open http://localhost:3000
