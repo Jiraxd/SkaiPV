@@ -2,17 +2,17 @@ import { MainProfilePage } from "@/components/MainProfilePage";
 import type { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
-  params: { profile: string[] }
-}
+  params: { profile: string[] };
+};
 
 export async function generateMetadata(
-  { params}: Props,
+  { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
- const returnValue = params.profile[1];
+  const returnValue = params.profile[1];
   return {
     title: returnValue,
-  }
+  };
 }
 
 export default function displaydata({

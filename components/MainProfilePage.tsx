@@ -16,6 +16,7 @@ import { InvDisplay } from "./InvDisplay";
 import Image from "next/image";
 import { PetsDisplay } from "./PetsDisplay";
 import { SlayersDisplay } from "./slayersDisplay";
+import { CollectionsDisplay } from "./CollectionsDisplay";
 
 // MIN RES JE 1321X1080, POTOM TO CHCE PŘEDĚLAT
 export const MainProfilePage = ({
@@ -27,6 +28,7 @@ export const MainProfilePage = ({
   const [data, setData] = useState(null);
   const [accData, setAccData] = useState(null);
   const [skillData, setSkill] = useState(null);
+  const [collectionsData, setCollections] = useState(null);
   const [uuid, setuuid] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const search = params.profile[1];
@@ -48,8 +50,18 @@ export const MainProfilePage = ({
         { cache: "force-cache" }
       ).then((res) => res.json());
       setSkill(skillData);
+      const collectionsData = await fetch(
+        `https://api.hypixel.net/v2/resources/skyblock/collections`,
+        { cache: "force-cache" }
+      ).then((res) => res.json());
+      setCollections(collectionsData);
       const data = await fetch(`/api/profileAPI?id=${id}`);
       const json = data.json();
+      const accDataxd = await fetch(
+        `https://api.hypixel.net/v2/resources/skyblock/items`,
+        { cache: "force-cache" }
+      ).then((res) => res.json());
+      console.log(accDataxd);
       return json;
     };
     fetchData().then((valuexd) => {
@@ -376,6 +388,26 @@ export const MainProfilePage = ({
         <Spacer y={4} />
         <div>
           <SlayersDisplay profileData={currentProfile}></SlayersDisplay>
+        </div>
+        <Spacer y={10} />
+        <div id="collections">
+          <h1
+            className={title()}
+            style={{
+              borderBottom: "4px solid green",
+              display: "inline-block",
+              paddingBottom: "8px",
+            }}
+          >
+            COLLECTIONS
+          </h1>
+        </div>
+        <Spacer y={4} />
+        <div>
+          <CollectionsDisplay
+            profileData={currentProfile}
+            collectionsInfo={collectionsData}
+          ></CollectionsDisplay>
         </div>
         <Spacer y={96} />
         <Spacer y={96} />

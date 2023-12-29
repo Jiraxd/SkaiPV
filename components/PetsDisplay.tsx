@@ -15,7 +15,7 @@ import { FormattedMCLine } from "./FormattedLine";
 import { Spacer } from "@nextui-org/spacer";
 import { getColorForStat } from "./StatsForItem";
 
-interface IStringIndex {
+export interface IStringIndex {
   [key: string]: any;
 }
 

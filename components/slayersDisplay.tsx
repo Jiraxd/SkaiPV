@@ -3,7 +3,6 @@ import Image from "next/image";
 import { SoloSlayerDisplay } from "./slayerSoloDisplay";
 
 export const SlayersDisplay = ({ profileData }: { profileData: any }) => {
-  console.log(profileData);
   return (
     <div
       style={{
