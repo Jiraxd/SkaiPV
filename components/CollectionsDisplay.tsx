@@ -27,7 +27,7 @@ export const CollectionsDisplay = ({
       }}
     >
       {Object.values(collectionsInfo["collections"]).map((value: any) => (
-        <>
+        <div key={value["name"]}>
           <h1
             style={{
               borderBottom: "1px solid green",
@@ -97,7 +97,7 @@ export const CollectionsDisplay = ({
               )
             )}
           </div>
-        </>
+        </div>
       ))}
     </div>
   );
