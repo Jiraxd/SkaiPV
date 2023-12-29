@@ -77,7 +77,7 @@ const itemMappings = {
   "Gemstone": "https://mc-heads.net/head/926a248fbbc06cf06e2c920eca1cac8a2c96164d3260494bed142d553026cc6"
 };
 
-export function getItemPathFromName(id: string, itemName: string){
+export function getItemPathFromCollection(id: string, itemName: string){
   let idReal =  "minecraft:" + itemName.replaceAll(" ", "_");
   const idRealGot = (itemMappings as IStringIndex)[itemName];
 if (idRealGot && idRealGot.startsWith("https://"))
@@ -94,4 +94,12 @@ if (idRealGot && idRealGot.startsWith("https://"))
 })
 const realurl = "/packs/" + itemTextureUrl.substring(itemTextureUrl.indexOf("textures") + 9, itemTextureUrl.length);
 return realurl;
+}
+
+export function getItemPathFromName(name: string){
+  let path:string = "";
+    let itemlower = name.toLowerCase();
+    path += itemlower + "/" + itemlower + ".png";
+      return path;
+  
 }

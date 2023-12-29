@@ -1,4 +1,4 @@
-import { GetIconPath, getItemPathFromName } from "@/utils/getIconPath";
+import { GetIconPath, getItemPathFromCollection, getItemPathFromName } from "@/utils/getIconPath";
 import Image from "next/image";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Button } from "@nextui-org/button";
@@ -62,7 +62,10 @@ export const CollectionsDisplay = ({
                 >
                   <div style={{ display: "inline-block" }}>
                     <Image
-                      src={getItemPathFromName(itemName, valueItem["name"])}
+                      src={getItemPathFromCollection(
+                        itemName,
+                        valueItem["name"]
+                      )}
                       width={32}
                       height={32}
                       alt={valueItem["name"]}
