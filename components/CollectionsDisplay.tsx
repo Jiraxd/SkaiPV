@@ -1,10 +1,21 @@
-import { GetIconPath, getItemPathFromCollection, getItemPathFromName } from "@/utils/getIconPath";
+import {
+  GetIconPath,
+  getItemPathFromCollection,
+  getItemPathFromName,
+} from "@/utils/getIconPath";
 import Image from "next/image";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Button } from "@nextui-org/button";
 import { FormatNumber } from "@/utils/formatNumber";
 import { GetCollectionLevel } from "@/utils/Calculations";
 
+/**
+ * Renders a display of the player's Hypixel SkyBlock collections.
+ *
+ * Maps over the collections data and renders each collection with its name,
+ * items, and collected counts. Uses utility functions to get icon paths,
+ * format numbers, calculate collection levels, and style elements.
+ */
 export const CollectionsDisplay = ({
   profileData,
   collectionsInfo,
@@ -12,8 +23,6 @@ export const CollectionsDisplay = ({
   profileData: any;
   collectionsInfo: any;
 }) => {
-  console.log(collectionsInfo);
-  console.log(profileData);
   if (
     collectionsInfo["collections"] == null ||
     collectionsInfo["collections"] == undefined
@@ -73,6 +82,7 @@ export const CollectionsDisplay = ({
                         verticalAlign: "middle",
                         display: "inline-block",
                       }}
+                      unoptimized
                     ></Image>
                     <span
                       style={{

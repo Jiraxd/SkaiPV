@@ -67,6 +67,11 @@ export const ArmorDisplay = ({
     ) : (
       <div>Player has no armor!</div>
     );
+  /**
+   * Renders the player's armor as a grid of item icons.
+   * Shows a tooltip with name, lore, and stats on hover.
+   * Handles mouse enter/move/leave events to control tooltip position.
+   */
   return (
     <>
       <div

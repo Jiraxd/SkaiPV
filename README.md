@@ -1,40 +1,46 @@
-# Next.js & NextUI Template
+# SkaiPV
 
-This is a template for creating applications using Next.js 13 (app directory) and NextUI (v2).
+This website allows you to view player profiles for the game Hypixel SkyBlock using data from the public Hypixel API.
 
-## Technologies Used
+## Features
 
-- [Next.js 13](https://nextjs.org/docs/getting-started)
-- [NextUI v2](https://nextui.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Tailwind Variants](https://tailwind-variants.org)
+- Search for any SkyBlock username and view their profile
+- View summary stats like skill levels, slayer stats, etc.
+- See inventory, armor, accessories, and more
+- Modern UI built with NextUI components
+
+## Built With
+
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [NextUI](https://nextui.org/)
 - [TypeScript](https://www.typescriptlang.org/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
 
-## How to Use
+## Getting Started
 
+Clone the repo
+`git clone https://github.com/Jiraxd/SkaiPV.git`
 
-### Use the template with create-next-app
+Install dependencies  
+`npm install`
 
-To create a new project based on this template using `create-next-app`, run the following command:
+Run the dev server
+`npm run dev`
 
-```bash
-npx create-next-app -e https://github.com/nextui-org/next-app-template
-```
+Open http://localhost:3000
 
-### Install dependencies
+## Customization
 
-```bash
-npm install
-```
+The project can be customized by:
 
-### Run the development server
+- Modifying React components in /components
+- Adding new stuff in /components/MainProfilePage
+- Configuring Next.js and TypeScript in next.config.js and tsconfig.json
 
-```bash
-npm run dev
-```
+## Deployment
+
+The app can be deployed on any platform that supports Node.js like Vercel, Netlify, etc.
 
 ## License
 
-Licensed under the [MIT license](https://github.com/nextui-org/next-app-template/blob/main/LICENSE).
+This project is open source and available under the MIT License.
