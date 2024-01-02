@@ -2,6 +2,8 @@
 
 This website allows you to view player profiles for the game Hypixel SkyBlock using data from the public Hypixel API.
 
+**This is my first website project, any pull requests are welcome!**
+
 ## Features
 
 - Search for any SkyBlock username and view their profile
