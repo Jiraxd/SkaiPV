@@ -17,6 +17,7 @@ import Image from "next/image";
 import { PetsDisplay } from "./PetsDisplay";
 import { SlayersDisplay } from "./slayersDisplay";
 import { CollectionsDisplay } from "./CollectionsDisplay";
+import { HOTMDisplay } from "./hotmDisplay";
 
 // MIN RES JE 1321X1080, POTOM TO CHCE PŘEDĚLAT
 export const MainProfilePage = ({
@@ -57,11 +58,6 @@ export const MainProfilePage = ({
       setCollections(collectionsData);
       const data = await fetch(`/api/profileAPI?id=${id}`);
       const json = data.json();
-      const accDataxd = await fetch(
-        `https://api.hypixel.net/v2/resources/skyblock/items`,
-        { cache: "force-cache" }
-      ).then((res) => res.json());
-      console.log(accDataxd);
       return json;
     };
     fetchData().then((valuexd) => {
@@ -76,6 +72,7 @@ export const MainProfilePage = ({
   const arrayx: UserDisplay[] = JSON.parse(strg as string);
   let currentProfile: any;
   let profileName = "error";
+  let otherMembers: any[] = [];
   if (params.profile.length > 2) {
     profileName = params.profile[2];
     let tempProfile = Object.values(data["profiles"]).find(
@@ -86,6 +83,10 @@ export const MainProfilePage = ({
     } catch (err) {
       banking = null;
     }
+    otherMembers = Object.entries(tempProfile["members"]).filter(
+      ([key, value]) => key !== uuid
+    );
+
     currentProfile = tempProfile["members"][`${uuid}`];
     if (currentProfile == null) {
       let tempProfile = Object.values(data["profiles"]).find(
@@ -108,6 +109,9 @@ export const MainProfilePage = ({
     } catch (err) {
       banking = null;
     }
+    otherMembers = Object.entries(tempProfile["members"]).filter(
+      ([key, value]) => key !== uuid
+    );
     currentProfile = tempProfile["members"][`${uuid}`];
     profileName = tempProfile["cute_name"];
   }
@@ -407,7 +411,25 @@ export const MainProfilePage = ({
           <CollectionsDisplay
             profileData={currentProfile}
             collectionsInfo={collectionsData}
+            allmembersCollections={otherMembers}
           ></CollectionsDisplay>
+        </div>
+        <Spacer y={12} />
+        <div id="hotm">
+          <h1
+            className={title()}
+            style={{
+              borderBottom: "4px solid green",
+              display: "inline-block",
+              paddingBottom: "8px",
+            }}
+          >
+            HEART OF THE MOUNTAIN
+          </h1>
+        </div>
+        <Spacer y={4} />
+        <div>
+          <HOTMDisplay profileData={currentProfile}></HOTMDisplay>
         </div>
         <Spacer y={96} />
         <Spacer y={96} />

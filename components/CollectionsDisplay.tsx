@@ -7,7 +7,11 @@ import Image from "next/image";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Button } from "@nextui-org/button";
 import { FormatNumber } from "@/utils/formatNumber";
-import { GetCollectionLevel } from "@/utils/Calculations";
+import {
+  GetCollectionLevel,
+  GetPercentToNextCollection,
+} from "@/utils/Calculations";
+import { IStringIndex } from "./PetsDisplay";
 
 /**
  * Renders a display of the player's Hypixel SkyBlock collections.
@@ -19,15 +23,35 @@ import { GetCollectionLevel } from "@/utils/Calculations";
 export const CollectionsDisplay = ({
   profileData,
   collectionsInfo,
+  allmembersCollections,
 }: {
   profileData: any;
   collectionsInfo: any;
+  allmembersCollections: any;
 }) => {
   if (
     collectionsInfo["collections"] == null ||
     collectionsInfo["collections"] == undefined
   )
     return <div>Player has API disabled!</div>;
+  const collectionsByName: IStringIndex = {};
+  Object.entries(profileData["collection"]).forEach(([key, value]) => {
+    if (!collectionsByName[key]) {
+      collectionsByName[key] = value;
+    }
+
+    collectionsByName[key] += value;
+  });
+  allmembersCollections.forEach((value: any) => {
+    if (value[1]["collection"] != undefined) {
+      Object.entries(value[1]["collection"]).forEach(([key, value]) => {
+        if (!collectionsByName[key]) {
+          collectionsByName[key] = value;
+        }
+        collectionsByName[key] += value;
+      });
+    }
+  });
   return (
     <div
       style={{
@@ -64,9 +88,21 @@ export const CollectionsDisplay = ({
                   key={itemName}
                   showArrow={true}
                   content={
-                    (profileData["collection"][itemName]
-                      ? FormatNumber(profileData["collection"][itemName])
-                      : 0) + " collected"
+                    <div
+                      style={{
+                        textAlign: "center",
+                      }}
+                    >
+                      {(collectionsByName[itemName]
+                        ? FormatNumber(collectionsByName[itemName])
+                        : 0) + " collected"}
+                      <br></br>
+                      {GetPercentToNextCollection(
+                        collectionsByName[itemName],
+                        valueItem["maxTiers"],
+                        valueItem["tiers"]
+                      )}
+                    </div>
                   }
                 >
                   <div style={{ display: "inline-block" }}>
@@ -89,7 +125,7 @@ export const CollectionsDisplay = ({
                         fontSize: "12px",
                         color:
                           GetCollectionLevel(
-                            profileData["collection"][itemName],
+                            collectionsByName[itemName],
                             valueItem["maxTiers"],
                             valueItem["tiers"]
                           ) === valueItem["maxTiers"]
@@ -101,7 +137,7 @@ export const CollectionsDisplay = ({
                         valueItem["name"] +
                         " " +
                         GetCollectionLevel(
-                          profileData["collection"][itemName],
+                          collectionsByName[itemName],
                           valueItem["maxTiers"],
                           valueItem["tiers"]
                         )}
