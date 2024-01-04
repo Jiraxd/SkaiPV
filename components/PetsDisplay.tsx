@@ -51,6 +51,10 @@ export const PetsDisplay = ({
   };
 
   useEffect(() => {
+    if (petData.length < 1) {
+      setPetList([]);
+      return;
+    }
     const petList: any[] = [];
     petData.forEach((item) => {
       let lore: string[] = [];
@@ -184,6 +188,7 @@ export const PetsDisplay = ({
     setPetList(petList);
   }, []);
   if (petlistFinished == null) return <></>;
+  if (petlistFinished.length < 1) return <div>Player has no pets!</div>;
   const uniquePets: string[] = [];
   let petscore: number = 0;
   let bonusmf = 0;

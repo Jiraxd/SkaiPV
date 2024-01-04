@@ -35,6 +35,11 @@ export const CollectionsDisplay = ({
   )
     return <div>Player has API disabled!</div>;
   const collectionsByName: IStringIndex = {};
+  if (
+    profileData["collection"] == undefined ||
+    profileData["collection"] == undefined
+  )
+    return <div>Player has collection data disabled!</div>;
   Object.entries(profileData["collection"]).forEach(([key, value]) => {
     if (!collectionsByName[key]) {
       collectionsByName[key] = value;
@@ -42,16 +47,18 @@ export const CollectionsDisplay = ({
 
     collectionsByName[key] += value;
   });
-  allmembersCollections.forEach((value: any) => {
-    if (value[1]["collection"] != undefined) {
-      Object.entries(value[1]["collection"]).forEach(([key, value]) => {
-        if (!collectionsByName[key]) {
-          collectionsByName[key] = value;
-        }
-        collectionsByName[key] += value;
-      });
-    }
-  });
+  if (allmembersCollections) {
+    allmembersCollections.forEach((value: any) => {
+      if (value[1]["collection"] != undefined) {
+        Object.entries(value[1]["collection"]).forEach(([key, value]) => {
+          if (!collectionsByName[key]) {
+            collectionsByName[key] = value;
+          }
+          collectionsByName[key] += value;
+        });
+      }
+    });
+  }
   return (
     <div
       style={{

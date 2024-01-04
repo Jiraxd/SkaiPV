@@ -20,23 +20,27 @@ export const InvDisplay = ({ playerData }: { playerData: any }) => {
   const [navbarHoveredIndex, setNavbarHoveredIndex] = useState<number>(-1);
   useEffect(() => {
     const fetchData = async () => {
-      const inventory = playerData["inventory"]["inv_contents"]["data"];
-      const invDecoded = await ConvertNBTToJson(inventory);
-      setInvContents(invDecoded);
-      const fish =
-        playerData["inventory"]["bag_contents"]["fishing_bag"]["data"];
-      const fishxd = await ConvertNBTToJson(fish);
-      setFishContents(fishxd);
-      const vault = playerData["inventory"]["personal_vault_contents"]["data"];
-      const vaultxd = await ConvertNBTToJson(vault);
-      setPotionContents(vaultxd);
-      const potion =
-        playerData["inventory"]["bag_contents"]["potion_bag"]["data"];
-      const potionxd = await ConvertNBTToJson(potion);
-      setVaultContents(potionxd);
-      const quiver = playerData["inventory"]["bag_contents"]["quiver"]["data"];
-      const quiverxd = await ConvertNBTToJson(quiver);
-      setQuiverContents(quiverxd);
+      if (playerData["inventory"]) {
+        const inventory = playerData["inventory"]["inv_contents"]["data"];
+        const invDecoded = await ConvertNBTToJson(inventory);
+        setInvContents(invDecoded);
+        const fish =
+          playerData["inventory"]["bag_contents"]["fishing_bag"]["data"];
+        const fishxd = await ConvertNBTToJson(fish);
+        setFishContents(fishxd);
+        const vault =
+          playerData["inventory"]["personal_vault_contents"]["data"];
+        const vaultxd = await ConvertNBTToJson(vault);
+        setPotionContents(vaultxd);
+        const potion =
+          playerData["inventory"]["bag_contents"]["potion_bag"]["data"];
+        const potionxd = await ConvertNBTToJson(potion);
+        setVaultContents(potionxd);
+        const quiver =
+          playerData["inventory"]["bag_contents"]["quiver"]["data"];
+        const quiverxd = await ConvertNBTToJson(quiver);
+        setQuiverContents(quiverxd);
+      }
     };
     fetchData();
   }, []);

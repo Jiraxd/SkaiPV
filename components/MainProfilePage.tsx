@@ -17,7 +17,7 @@ import Image from "next/image";
 import { PetsDisplay } from "./PetsDisplay";
 import { SlayersDisplay } from "./slayersDisplay";
 import { CollectionsDisplay } from "./CollectionsDisplay";
-import { HOTMDisplay } from "./hotmDisplay";
+import { RiftDisplay } from "./RiftDisplay";
 
 // MIN RES JE 1321X1080, POTOM TO CHCE PŘEDĚLAT
 export const MainProfilePage = ({
@@ -424,12 +424,12 @@ export const MainProfilePage = ({
               paddingBottom: "8px",
             }}
           >
-            HEART OF THE MOUNTAIN
+            Rift
           </h1>
         </div>
         <Spacer y={4} />
         <div>
-          <HOTMDisplay profileData={currentProfile}></HOTMDisplay>
+          <RiftDisplay profileData={currentProfile}></RiftDisplay>
         </div>
         <Spacer y={96} />
         <Spacer y={96} />

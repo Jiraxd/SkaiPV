@@ -46,9 +46,12 @@ export const StatsDisplay = ({
   const formattedDate = `${day < 10 ? "0" : ""}${day} ${
     month < 10 ? "0" : ""
   }${month} ${year}`;
-  const formattedMoney = FormatNumber(
-    playerData["currencies"]["coin_purse"] as number
-  );
+  let formattedMoney = "0";
+  if (playerData["currencies"]) {
+    formattedMoney = FormatNumber(
+      playerData["currencies"]["coin_purse"] as number
+    );
+  }
   let moneyBank = 0;
   if (banking != null) {
     moneyBank = banking["balance"];

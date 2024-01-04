@@ -68,6 +68,7 @@ export const WeaponsDisplay = ({ playerData }: { playerData: any }) => {
       );
       weapons = await weapons.filter(
         (f) =>
+          f["tag"]["display"]["Lore"] != undefined &&
           (f["tag"]["display"]["Lore"] as string[])[
             (f["tag"]["display"]["Lore"] as string[]).length - 1
           ].includes("SWORD" || "BOW") === true

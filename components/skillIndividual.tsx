@@ -43,8 +43,26 @@ export const SoloSkill = ({
       maxValue = (levels as any)[skillIndex]["totalExpRequired"];
       valueskill = skillExp;
     }
+    if (value === "FARMING") {
+      let realMaxLvl =
+        50 +
+        (playerData["jacobs_contest"]["perks"]["farming_level_cap"] as number);
+      if (skillIndex + 1 > realMaxLvl) {
+        levelText = `Level ${realMaxLvl} - Farming level cap reached`;
+        maxValue = (levels as any)[realMaxLvl - 1]["totalExpRequired"];
+        usePrimary = false;
+      }
+    } else if (value === "TAMING") {
+      levelText = `Level ${skillIndex} - Taming level can vary, API doesn't support skill lvl cap upgrades`;
+      // TODO: Až hypixel API přidá taming cap, dodělat
+      let realMaxLvl = 50 + 10;
+      if (skillIndex + 1 > realMaxLvl) {
+        levelText = `Level ${realMaxLvl} - Taming level cap reached`;
+        maxValue = (levels as any)[realMaxLvl - 1]["totalExpRequired"];
+        usePrimary = false;
+      }
+    }
   }
-
   return (
     <div
       style={{
@@ -76,7 +94,7 @@ export const SoloSkill = ({
       </div>
       <Progress
         label={
-          <div style={{ transform: "translateY(25%) translateX(12%)" }}>
+          <div style={{ transform: "translateY(25%) translateX(7px)" }}>
             {levelText}
           </div>
         }
