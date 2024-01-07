@@ -296,7 +296,7 @@ class Eerie extends Pet {
   get third() {
     const mult = getValue(this.rarity, { legendary: 0.01 });
 
-    const primalFearKills = this.profile["player_stats"]["kills"]["primal_fear"];
+    const primalFearKills = this.profileData["player_stats"]["kills"]["primal_fear"];
     const kills = Math.max(primalFearKills, 150);
 
     const killsFormatted = kills >= 150 ? `§a${kills}` : `§c${kills}`;
@@ -1174,10 +1174,10 @@ class GoldenDragon extends Pet {
   get stats() {
     const stats = {};
     if (this.level.level >= 100) {
-      if(this.profile){
+      if(this.profileData){
       let goldCollectionDigits = 0;
-      if(this.profile["collection"]){
-      goldCollectionDigits = this.profile["collection"]["GOLD_INGOT"];
+      if(this.profileData["collection"]){
+      goldCollectionDigits = this.profileData["collection"]["GOLD_INGOT"];
       }
 
       stats.strength = Math.floor(25 + Math.max(0, this.level.level - 100) * 0.25) + 10 * goldCollectionDigits;
@@ -2512,7 +2512,7 @@ class Monkey extends Pet {
 
 class Montezuma extends Pet {
   get stats() {
-    const riftSouls = (this.profile["rift"]["dead_cats"]["found_cats"] ?? []).length;
+    const riftSouls = (this.profileData["rift"]["dead_cats"]["found_cats"] ?? []).length;
 
     return {
       rift_time: 10 + riftSouls * 15,

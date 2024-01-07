@@ -158,25 +158,25 @@ export const PetsDisplay = ({
               20 - progress
             )} §e${numerator} §6/ §e${denominator}`
           );
+
+          let progressxd = Math.floor(
+            (pet.level.xpCurrent / pet.level.xpMaxLevel) * 100
+          );
+          if (isNaN(progress)) {
+            progressxd = 0;
+          }
+
+          lore.push(
+            "",
+            `§7Total XP: §e${FormatNumber(
+              pet.level.xpCurrent
+            )} §6/ §e${FormatNumber(
+              pet.level.xpMaxLevel
+            )} §6(${progressxd.toLocaleString()}%)`
+          );
         } else {
           lore.push("§bMAX LEVEL");
         }
-
-        let progress = Math.floor(
-          (pet.level.xpCurrent / pet.level.xpMaxLevel) * 100
-        );
-        if (isNaN(progress)) {
-          progress = 0;
-        }
-
-        lore.push(
-          "",
-          `§7Total XP: §e${FormatNumber(
-            pet.level.xpCurrent
-          )} §6/ §e${FormatNumber(
-            pet.level.xpMaxLevel
-          )} §6(${progress.toLocaleString()}%)`
-        );
 
         if (activePet["candyUsed"] > 0) {
           lore.push(`§7Candy Used: §e${activePet["candyUsed"] || 0} §6/ §e10`);
