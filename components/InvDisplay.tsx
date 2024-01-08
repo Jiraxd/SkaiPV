@@ -73,7 +73,7 @@ export const InvDisplay = ({ playerData }: { playerData: any }) => {
   if (QuiverContents == null) return <></>;
 
   const navbarList = [
-    { label: "INV", iconName: "inv" },
+    { label: "INV", iconName: "chest" },
     { label: "STORAGE", iconName: "chest" },
     { label: "ENDER", iconName: "ender" },
     { label: "VAULT", iconName: "vault" },

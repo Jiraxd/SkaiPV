@@ -10,13 +10,18 @@ import { PET_DATA } from "@/constants/pets";
 import Image from "next/image";
 import { GetColorFromRarity } from "@/utils/ColorStuff";
 import { FormattedMCLine } from "./FormattedLine";
+import { InventoryContainer } from "./InventoryContainer";
+import { EnderContainer } from "./enderContainer";
 
 export const RiftDisplay = ({ profileData }: { profileData: any }) => {
   const [armor, setArmor] = useState<any>(null);
   const [equipment, setEquipment] = useState<any>(null);
   const [montezuma, setMontezuma] = useState<any>(null);
+  const [inventory, setInventory] = useState<any>(null);
   const [hovered, setHovered] = useState<boolean>(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [selectedSection, setSelected] = useState<number>(0);
+  const [navbarHoveredIndex, setNavbarHoveredIndex] = useState<number>(-1);
 
   console.log(profileData);
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -41,6 +46,7 @@ export const RiftDisplay = ({ profileData }: { profileData: any }) => {
     const armorDataEncoded = riftData["inventory"]["inv_armor"]["data"];
     const equipmentDataEncoded =
       riftData["inventory"]["equipment_contents"]["data"];
+    const inventoryEncoded = riftData["inventory"]["inv_contents"]["data"];
     const fetchData = async () => {
       if (armorDataEncoded) {
         const armorValue = await ConvertNBTToJson(armorDataEncoded);
@@ -53,6 +59,10 @@ export const RiftDisplay = ({ profileData }: { profileData: any }) => {
         const equipmentreversed = equipment.reverse();
         let equip: any[] = equipmentreversed.filter((x) => x["tag"] != null);
         setEquipment(equip);
+      }
+      if (inventoryEncoded) {
+        const inv = await ConvertNBTToJson(inventoryEncoded);
+        setInventory(inv);
       }
       if (
         riftData["dead_cats"] != null &&
@@ -155,6 +165,7 @@ export const RiftDisplay = ({ profileData }: { profileData: any }) => {
     return <div>{"Player hasn't visited the rift yet!"}</div>;
   if (armor == null) return <div>Loading...</div>;
   if (equipment == null) return <div>Loading...</div>;
+  if (inventory == null) return <div>Loading...</div>;
   return (
     <div>
       <div
@@ -162,6 +173,7 @@ export const RiftDisplay = ({ profileData }: { profileData: any }) => {
           display: "flex",
           flexDirection: "row",
           gap: "20px",
+          marginBottom: "140px",
         }}
       >
         <div
@@ -235,6 +247,7 @@ export const RiftDisplay = ({ profileData }: { profileData: any }) => {
             </div>
           )}
         </div>
+
         <div
           style={{
             display: "flex",
@@ -252,6 +265,90 @@ export const RiftDisplay = ({ profileData }: { profileData: any }) => {
               textAlign: "center",
             }}
           >
+            Rift Information
+          </p>
+          <div>
+            <p
+              style={{
+                color: "purple",
+                fontWeight: "bold",
+                fontSize: "16px",
+              }}
+            >
+              {"Motes: "}{" "}
+              <span
+                style={{
+                  color: "white",
+                  fontSize: "16px",
+                  fontWeight: "lighter",
+                }}
+              >
+                {profileData["currencies"]["motes_purse"]}
+              </span>
+            </p>
+            <p
+              style={{
+                color: "purple",
+                fontWeight: "bold",
+                fontSize: "16px",
+              }}
+            >
+              {"Enigma Souls: "}{" "}
+              <span
+                style={{
+                  color: "white",
+                  fontSize: "16px",
+                  fontWeight: "lighter",
+                }}
+              >
+                {(riftData["enigma"]["found_souls"] as []).length + "/42"}
+              </span>
+            </p>
+            <p
+              style={{
+                color: "purple",
+                fontWeight: "bold",
+                fontSize: "16px",
+              }}
+            >
+              {"Timecharms: "}{" "}
+              <span
+                style={{
+                  color: "white",
+                  fontSize: "16px",
+                  fontWeight: "lighter",
+                }}
+              >
+                {(riftData["gallery"]["secured_trophies"] as []).length + "/7"}
+              </span>
+            </p>
+            <p
+              style={{
+                color: "purple",
+                fontWeight: "bold",
+                fontSize: "16px",
+              }}
+            >
+              {"Eyes killed: "}{" "}
+              <span
+                style={{
+                  color: "white",
+                  fontSize: "16px",
+                  fontWeight: "lighter",
+                }}
+              >
+                {(riftData["wither_cage"]["killed_eyes"] as []).length + "/6"}
+              </span>
+            </p>
+          </div>
+          <p
+            style={{
+              fontWeight: "bold",
+              fontSize: "18px",
+              borderBottom: "2px solid #ffffff25",
+              textAlign: "center",
+            }}
+          >
             Montezuma
           </p>
           {montezuma === "nullxd" ? (
@@ -261,11 +358,9 @@ export const RiftDisplay = ({ profileData }: { profileData: any }) => {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "10px",
-                textAlign: "center",
-                marginLeft: "8.5px",
                 maxWidth: "75px",
                 maxHeight: "75px",
+                marginLeft: "37.5px",
               }}
             >
               {riftData["dead_cats"] == null ? (
@@ -356,26 +451,104 @@ export const RiftDisplay = ({ profileData }: { profileData: any }) => {
             </div>
           )}
         </div>
+      </div>
+      <div
+        style={{
+          display: "inline-block",
+          backgroundColor: "rgba(20,20,20, 0.3)",
+          padding: "20px",
+          borderRadius: "10px",
+          width: "880px",
+        }}
+      >
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            textAlign: "center",
-            marginLeft: "4px",
+            flexDirection: "row",
+            gap: "30px",
+            paddingBottom: "8px",
+            borderBottom: "4px solid #0bca51",
           }}
         >
-          <p
+          <button
+            onClick={() => setSelected(0)}
+            onMouseEnter={() => setNavbarHoveredIndex(0)}
+            onMouseLeave={() => setNavbarHoveredIndex(-1)}
             style={{
-              fontWeight: "bold",
-              fontSize: "18px",
-              borderBottom: "2px solid #ffffff25",
-              textAlign: "center",
+              borderTop:
+                selectedSection === 0
+                  ? "2px solid #0bca51"
+                  : "2px solid transparent",
+              display: "flex",
+              alignItems: "center",
+              padding: "4px",
+              cursor: "pointer",
+              transition: "border-top 0.3s ease-in-out",
+              ...(navbarHoveredIndex === 0 && {
+                borderTop: "2px solid #0bca51",
+              }),
             }}
           >
-            Rift Information
-          </p>
+            <Image
+              src={`/zajebanyicony/chest.png`}
+              alt={"inv"}
+              width={32}
+              height={32}
+            />
+            <div style={{ marginLeft: "8px" }}>{"INV"}</div>
+          </button>
+          <button
+            onClick={() => setSelected(1)}
+            onMouseEnter={() => setNavbarHoveredIndex(1)}
+            onMouseLeave={() => setNavbarHoveredIndex(-1)}
+            style={{
+              borderTop:
+                selectedSection === 1
+                  ? "2px solid #0bca51"
+                  : "2px solid transparent",
+              display: "flex",
+              alignItems: "center",
+              padding: "4px",
+              cursor: "pointer",
+              transition: "border-top 0.3s ease-in-out",
+              ...(navbarHoveredIndex === 1 && {
+                borderTop: "2px solid #0bca51",
+              }),
+            }}
+          >
+            <Image
+              src={`/zajebanyicony/ender.png`}
+              alt={"ender"}
+              width={32}
+              height={32}
+            />
+            <div style={{ marginLeft: "8px" }}>{"ENDER"}</div>
+          </button>
         </div>
+        {selectedSection === 0 && (
+          <div
+            className="opacity-0"
+            onLoad={(e) => (e.currentTarget.className = "opacity-100")}
+            style={{
+              transition: "opacity 0.5s ease-in-out",
+            }}
+          >
+            <InventoryContainer inventoryxd={inventory} />
+          </div>
+        )}
+        {selectedSection === 1 && (
+          <div
+            className="opacity-0"
+            onLoad={(e) => (e.currentTarget.className = "opacity-100")}
+            style={{
+              transition: "opacity 0.5s ease-in-out",
+            }}
+          >
+            <EnderContainer
+              enderData={riftData["inventory"]["ender_chest_contents"]["data"]}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

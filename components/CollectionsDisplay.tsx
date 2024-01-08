@@ -84,7 +84,7 @@ export const CollectionsDisplay = ({
               flexDirection: "row",
               display: "flex",
               flexWrap: "wrap",
-              maxWidth: "800px",
+              maxWidth: "1200px",
               gap: "20px",
               marginTop: "10px",
             }}
