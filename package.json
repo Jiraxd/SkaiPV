@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@types/pako": "^2.0.3",
-    "@types/react-scroll": "^1.8.10"
+    "@types/react-scroll": "^1.8.10",
+    "daisyui": "^4.5.0"
   }
 }

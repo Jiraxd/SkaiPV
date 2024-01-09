@@ -12,10 +12,8 @@ export const DataNavbar = () => {
     { id: "slayer", label: "Collections" },
     { id: "collections", label: "Rift" },
     { id: "rift", label: "Museum" },
-    { id: "museum", label: "Garden" },
-    { id: "garden", label: "Fishing" },
-    { id: "fishing", label: "Extra Stats" },
-    { id: "extrastats", label: "Misc" },
+    { id: "museum", label: "Fishing" },
+    { id: "fishing", label: "Misc" },
   ];
 
   return (

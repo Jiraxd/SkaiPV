@@ -24,6 +24,7 @@ export const StatsDisplay = ({
   skillData: any;
 }) => {
   const [networth, setNetworth] = useState("0");
+  const [stats, setStats] = useState<PlayerStats[] | null>(null);
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetch(`/api/museumAPI?id=${uuid}`);
@@ -32,13 +33,14 @@ export const StatsDisplay = ({
         v2Endpoint: true,
         museumData,
       });
+      const playerstats = await CalculateStats(playerData);
+      setStats(playerstats);
       return networth;
     };
     fetchData().then((valuexd) => {
       setNetworth(FormatNumber(valuexd.networth));
     });
   }, []);
-  const stats: PlayerStats[] = CalculateStats(playerData);
   const date = new Date(playerData["profile"]["first_join"]);
   const day = date.getDate();
   const month = date.getMonth() + 1;
@@ -69,11 +71,20 @@ export const StatsDisplay = ({
           gap: "4px",
         }}
       >
-        {stats.map((playerstat) => {
-          return (
-            <SoloStat playerstat={playerstat} key={playerstat.stat}></SoloStat>
-          );
-        })}
+        {stats == null ? (
+          <div>Loading...</div>
+        ) : (
+          <>
+            {stats.map((playerstat) => {
+              return (
+                <SoloStat
+                  playerstat={playerstat}
+                  key={playerstat.stat}
+                ></SoloStat>
+              );
+            })}
+          </>
+        )}
       </div>
       <br></br>
       <div
