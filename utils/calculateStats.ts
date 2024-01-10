@@ -77,37 +77,36 @@ export async function CalculateStats(playerData: any){
     return array;
 
 }
-
-const calculateHealth = (
-  playerData: any,
+const getStatFromItems = (  playerData: any,
   armorData: any,
   equipData: any,
   petStats: any,
-  accsData: any
-): PlayerStats => {
-  let healthValue = 0;
-  let givesStats:GivesStat[] = [];
-  let armorGives = 0;
-  (armorData as []).forEach((armor) => {
-    const line = (armor["tag"]["display"]["Lore"] as []).find((item) => (item as string).includes("Health: "));
-    if(line){
-        const parsedValue = getHealth(line);
-        if(parsedValue > 0){
-        healthValue += parsedValue;
-        armorGives += parsedValue;
-       
-        }
-    }
-  });
-  if(armorGives > 0)
-  givesStats.push(new GivesStat("Armor", armorGives));
-  let equipGives = 0;
+  accsData: any,
+  stat:string
+) => {
+let statValue = 0;
+let givesStats:GivesStat[] = [];
+let armorGives = 0;
+(armorData as []).forEach((armor) => {
+  const line = (armor["tag"]["display"]["Lore"] as []).find((item) => (item as string).includes(stat + ": "));
+  if(line){
+      const parsedValue = getHealth(line);
+      if(parsedValue > 0){
+        statValue += parsedValue;
+      armorGives += parsedValue;
+     
+      }
+  }
+});
+if(armorGives > 0)
+givesStats.push(new GivesStat("Armor", armorGives));
+let equipGives = 0;
   (equipData as []).forEach((equip) => {
-    const line = (equip["tag"]["display"]["Lore"] as []).find((item) => (item as string).includes("Health: "));
+    const line = (equip["tag"]["display"]["Lore"] as []).find((item) => (item as string).includes(stat + ": "));
     if(line){
         const parsedValue = getHealth(line);
         if(parsedValue > 0){
-        healthValue += parsedValue;
+          statValue += parsedValue;
         equipGives += parsedValue;
         }
     }
@@ -116,16 +115,16 @@ const calculateHealth = (
   givesStats.push(new GivesStat("Equipment", equipGives));
   const petstat = (petStats as IStringIndex)["health"];
   if(petstat != null){
-    healthValue += petstat;
+    statValue += petstat;
     givesStats.push(new GivesStat("Pet", petstat));
   }
   let accessoriesValue = 0;
   (accsData as []).forEach((equip) => {
-    const line = (equip["tag"]["display"]["Lore"] as []).find((item) => (item as string).includes("Health: "));
+    const line = (equip["tag"]["display"]["Lore"] as []).find((item) => (item as string).includes(stat + ": "));
     if(line){
         const parsedValue = getHealth(line);
         if(parsedValue > 0){
-        healthValue += parsedValue;
+        statValue += parsedValue;
         accessoriesValue += parsedValue;
         
         }
@@ -133,18 +132,33 @@ const calculateHealth = (
   });
   if(accessoriesValue > 0)
   givesStats.push(new GivesStat("Accessories", accessoriesValue));
-const powerHealth = playerData["accessory_bag_storage"]["tuning"]["slot_0"]["health"];
-if(powerHealth > 0){
-healthValue += powerHealth;
-givesStats.push(new GivesStat("Accs Power", powerHealth));
+  const powerHealth = playerData["accessory_bag_storage"]["tuning"]["slot_0"][stat.toLowerCase()];
+  if(powerHealth > 0){
+  statValue += powerHealth;
+  givesStats.push(new GivesStat("Accs Power", powerHealth));
 }
+return [statValue, givesStats];
+}
+const calculateHealth = (
+  playerData: any,
+  armorData: any,
+  equipData: any,
+  petStats: any,
+  accsData: any
+): PlayerStats => {
+const stats = getStatFromItems(playerData, armorData,equipData,petStats, accsData, "Health");
+const healthValue = stats[0];
+const givesStats = stats[1];
+ 
+
+
 // bestiary
 // potiony
 // skilly
 // upgrady
 // sb level
 
-  let playerStats: PlayerStats = new PlayerStats("Health", healthValue, givesStats);
+  let playerStats: PlayerStats = new PlayerStats("Health", (healthValue as number), givesStats as GivesStat[]);
   console.log(playerStats);
   return playerStats;
 }
