@@ -5,8 +5,9 @@ import { PET_STATS } from "@/constants/pet-stats";
 import { IStringIndex } from "@/components/PetsDisplay";
 import { getPetLevel } from "./PetUtils";
 import { PET_ITEMS } from "@/constants/pets";
+import { GetSkillLvl } from "./getSkillLevel";
 
-export async function CalculateStats(playerData: any){
+export async function CalculateStats(playerData:any, skillData:any){
     let array: PlayerStats[] = [
     ];
         const equipDataEncoded = playerData["inventory"]["equipment_contents"]["data"];
@@ -73,7 +74,7 @@ export async function CalculateStats(playerData: any){
         const invContent = await ConvertNBTToJson(encodedInv);
         accsPlayer = await invContent.filter((acc) => acc["tag"] != null);
       }
-    array.push(calculateHealth(playerData, armorek, equipment, petstats, accsPlayer));
+    array.push(calculateHealth(playerData, armorek, equipment, petstats, accsPlayer, skillData));
     return array;
 
 }
@@ -144,22 +145,33 @@ const calculateHealth = (
   armorData: any,
   equipData: any,
   petStats: any,
-  accsData: any
+  accsData: any,
+  skillData: any
 ): PlayerStats => {
 const stats = getStatFromItems(playerData, armorData,equipData,petStats, accsData, "Health");
-const healthValue = stats[0];
-const givesStats = stats[1];
+let healthValue = stats[0] as number;
+const givesStats = stats[1] as GivesStat[];
  
+const bestiaryClaimed = parseInt(playerData["bestiary"]["milestone"]["last_claimed_milestone"]);
+if(bestiaryClaimed)
+  if(bestiaryClaimed > 0)
+  {
+    healthValue += bestiaryClaimed * 2;
+    givesStats.push(new GivesStat("Bestiary Milestones", bestiaryClaimed));
+  }
 
+const slayerStats = getSlayerHealth(playerData);
+healthValue += slayerStats as number;
+givesStats.push(new GivesStat("Slayers", slayerStats));
 
-// bestiary
-// potiony
-// skilly
+const skillStats = getSkillHealth(playerData, skillData);
+healthValue += skillStats;
+givesStats.push(new GivesStat("Skills", skillStats));
 // upgrady
 // sb level
+// chip, operator, carrots
 
-  let playerStats: PlayerStats = new PlayerStats("Health", (healthValue as number), givesStats as GivesStat[]);
-  console.log(playerStats);
+  let playerStats: PlayerStats = new PlayerStats("Health", healthValue, givesStats);
   return playerStats;
 }
 
@@ -174,4 +186,156 @@ function getHealth(line:string):number{
     else{
         return 0;
     }
+}
+
+function getSkillHealth(playerData:any, skillData:any){
+const farmingLvl = GetSkillLvl(playerData, "FARMING", skillData);
+const fishingLvl = GetSkillLvl(playerData, "FISHING", skillData);
+const lvls = [farmingLvl, fishingLvl];
+let health = 0;
+lvls.forEach((lvl) => {
+if(lvl >= 14){
+health += 14 * 2;
+if(lvl >= 19){
+  health += 5 * 3;
+  if(lvl >= 25){
+    health += 6 * 4;
+    health += lvl - 25 * 5;
+  }
+  else health += lvl - 19 * 4;
+}
+else health += lvl - 14 * 3;
+}
+else health += lvl * 2;
+});
+return health;
+}
+
+function getSlayerHealth(playerData: any){
+  let healthValue = 0;
+  const blazeArray = Object.keys(playerData["slayer"]["slayer_bosses"]["blaze"]["claimed_levels"]);
+  const blazeSlayerLvl = blazeArray.length > 1 ? parseInt(blazeArray[blazeArray.length - 1].charAt(blazeArray[blazeArray.length - 1].length)) : 0;
+  switch(blazeSlayerLvl){
+    case 1:
+      healthValue += 3;
+    break;
+    case 2:
+      healthValue += 3;
+    break;
+    case 3:
+      healthValue += 7;;
+    break;
+    case 4:
+      healthValue += 7;
+    break;
+    case 5:
+      healthValue += 12;
+    break;
+    case 6:
+      healthValue += 12;;
+    break;
+    case 7:
+      healthValue += 18;
+    break;
+    case 8:
+      healthValue += 18;
+    break;
+    case 9:
+      healthValue += 25;
+    break;
+  }
+  const enderArray = Object.keys(playerData["slayer"]["slayer_bosses"]["enderman"]["claimed_levels"]);
+  const enderLvl = enderArray.length > 1 ? parseInt(enderArray[enderArray.length - 1].charAt(enderArray[enderArray.length - 1].length)) : 0;
+  switch(enderLvl){
+    case 1:
+      healthValue += 1;
+    break;
+    case 2:
+      healthValue += 1;
+    break;
+    case 3:
+      healthValue += 3;
+    break;
+    case 4:
+      healthValue += 3;
+    break;
+    case 5:
+      healthValue += 6;
+    break;
+    case 6:
+      healthValue += 6;
+    break;
+    case 7:
+      healthValue += 10;
+    break;
+    case 8:
+      healthValue += 10;
+    break;
+    case 9:
+      healthValue += 15;
+    break;
+  }
+  const wolfArray = Object.keys(playerData["slayer"]["slayer_bosses"]["wolf"]["claimed_levels"]);
+  const wolfLvl = wolfArray.length > 1 ? parseInt(wolfArray[wolfArray.length - 1].charAt(wolfArray[wolfArray.length - 1].length)) : 0;
+  switch(wolfLvl){
+    case 1:
+      healthValue += 0;
+    break;
+    case 2:
+      healthValue += 2;;
+    break;
+    case 3:
+      healthValue += 2;
+    break;
+    case 4:
+      healthValue += 4;
+    break;
+    case 5:
+      healthValue += 4;
+    break;
+    case 6:
+      healthValue += 7;
+    break;
+    case 7:
+      healthValue += 7;
+    break;
+    case 8:
+      healthValue += 7;
+    break;
+    case 9:
+      healthValue += 12;
+    break;
+  }
+  const zombieArray = Object.keys(playerData["slayer"]["slayer_bosses"]["zombie"]["claimed_levels"]);
+  const zombieLvl = zombieArray.length > 1 ? parseInt(zombieArray[zombieArray.length - 1].charAt(zombieArray[zombieArray.length - 1].length)) : 0;
+  switch(zombieLvl){
+    case 1:
+      healthValue += 2;
+    break;
+    case 2:
+      healthValue += 4;
+    break;
+    case 3:
+      healthValue += 7;
+    break;
+    case 4:
+      healthValue += 10;
+    break;
+    case 5:
+      healthValue += 14;
+    break;
+    case 6:
+      healthValue += 18;
+    break;
+    case 7:
+      healthValue += 23;
+    break;
+    case 8:
+      healthValue += 28;
+    break;
+    case 9:
+      healthValue += 34;
+    break;
+  }
+  return healthValue;
 }

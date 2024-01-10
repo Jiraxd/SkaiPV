@@ -33,7 +33,7 @@ export const StatsDisplay = ({
         v2Endpoint: true,
         museumData,
       });
-      const playerstats = await CalculateStats(playerData);
+      const playerstats = await CalculateStats(playerData, skillData);
       setStats(playerstats);
       return networth;
     };
