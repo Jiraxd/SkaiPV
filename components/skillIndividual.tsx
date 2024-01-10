@@ -10,7 +10,6 @@ export const SoloSkill = ({
   value: string;
   skillData: any;
 }) => {
-  console.log(skillData);
   let experience;
   try {
     experience = playerData["player_data"]["experience"];

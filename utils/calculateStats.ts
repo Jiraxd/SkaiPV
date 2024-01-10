@@ -149,7 +149,7 @@ const calculateHealth = (
   skillData: any
 ): PlayerStats => {
 const stats = getStatFromItems(playerData, armorData,equipData,petStats, accsData, "Health");
-let healthValue = stats[0] as number;
+let healthValue = (stats[0] as number + 100); // 100 base value
 const givesStats = stats[1] as GivesStat[];
  
 const bestiaryClaimed = parseInt(playerData["bestiary"]["milestone"]["last_claimed_milestone"]);
@@ -167,9 +167,29 @@ givesStats.push(new GivesStat("Slayers", slayerStats));
 const skillStats = getSkillHealth(playerData, skillData);
 healthValue += skillStats;
 givesStats.push(new GivesStat("Skills", skillStats));
-// upgrady
-// sb level
-// chip, operator, carrots
+
+const healthUpgradeLvl = playerData["player_data"]["perks"]["permanent_health"]
+if(healthUpgradeLvl){
+  healthValue += healthUpgradeLvl * 2;
+  givesStats.push(new GivesStat("Perks", healthUpgradeLvl * 2));
+}
+
+const reaperpeppers = playerData["player_data"]["reaper_peppers_eaten"];
+if(reaperpeppers){
+  healthValue += reaperpeppers;
+  givesStats.push(new GivesStat("Reaper Peppers", reaperpeppers));
+}
+
+const levelUnformatted = playerData["leveling"][
+  "experience"
+] as number;
+const sblevel = Math.floor(levelUnformatted / 100);
+healthValue += sblevel * 5;
+givesStats.push(new GivesStat("SB Level", sblevel * 5));
+
+
+// https://wiki.hypixel.net/Health#Increasing_Base_Health
+// dungeon lvl
 
   let playerStats: PlayerStats = new PlayerStats("Health", healthValue, givesStats);
   return playerStats;
@@ -223,7 +243,7 @@ function getSlayerHealth(playerData: any){
       healthValue += 3;
     break;
     case 3:
-      healthValue += 7;;
+      healthValue += 7;
     break;
     case 4:
       healthValue += 7;
@@ -232,7 +252,7 @@ function getSlayerHealth(playerData: any){
       healthValue += 12;
     break;
     case 6:
-      healthValue += 12;;
+      healthValue += 12;
     break;
     case 7:
       healthValue += 18;
