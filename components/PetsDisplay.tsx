@@ -217,8 +217,13 @@ export const PetsDisplay = ({
   const activePetxd = petlistFinished.find(
     (p) => p["activePet"]["active"] === true
   );
-  const activePet = activePetxd["activePet"];
-  const loreActive = activePetxd["lore"];
+  let activePet: any = null;
+  let loreActive: any = null;
+  if (activePetxd) {
+    activePet = activePetxd["activePet"];
+
+    loreActive = activePetxd["lore"];
+  }
 
   return (
     <div style={{ marginTop: "20px" }}>
