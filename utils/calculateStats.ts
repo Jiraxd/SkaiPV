@@ -10,6 +10,9 @@ import { GetSkillLvl } from "./getSkillLevel";
 export async function CalculateStats(playerData: any, skillData: any) {
   let array: PlayerStats[] = [
   ];
+  if(playerData["inventory"] == null) return "disabled";
+  if(playerData["inventory"] == undefined) return "disabled";
+  
   const equipDataEncoded = playerData["inventory"]["equipment_contents"]["data"];
   const armorDataEncoded = playerData["inventory"]["inv_armor"]["data"];
 
@@ -80,9 +83,6 @@ export async function CalculateStats(playerData: any, skillData: any) {
   array.push(calculateDefense(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateSpeed(playerData, armorek, equipment, petstats, accsPlayer, skillData, petName));
   /*
-      new PlayerStats("Health", 0, []),
-      new PlayerStats("Defense", 0, []),
-      new PlayerStats("Speed", 0, []),
       new PlayerStats("Strength", 0, []),
       new PlayerStats("Intelligence", 0, []),
       new PlayerStats("Crit Chance", 0, []),
@@ -132,71 +132,75 @@ const calculateSpeed = (
   let hasSnail = false;
   let hasWarden = false;
   // potiony
-    if (armorData) {
-      (armorData as []).forEach((armor) => {
-        if ((armor["tag"]["display"]["Name"] as string).includes("Young Dragon")) youngDragonCount++;
-        if ((armor["tag"]["display"]["Name"] as string).includes("Racing")) hasRacing = true;
-        if ((armor["tag"]["display"]["Name"] as string).includes("Rancher")){ 
-          hasRancher = true;
-          // set rancherCap
+  if (armorData) {
+    (armorData as []).forEach((armor) => {
+      if ((armor["tag"]["display"]["Name"] as string).includes("Young Dragon")) youngDragonCount++;
+      if ((armor["tag"]["display"]["Name"] as string).includes("Racing")) hasRacing = true;
+      if ((armor["tag"]["display"]["Name"] as string).includes("Rancher")) {
+        hasRancher = true;
+        const line = (armor["tag"]["display"]["Lore"] as string[]).find((f) => f.includes("Current Speed Cap:"));
+        console.log(line);
+        if (line) {
+          const parsedNumber = line.substring(line.lastIndexOf("§") + 2, line.length);
+          RancherCap = parseInt(parsedNumber);
+          console.log(RancherCap);
         }
-        if ((armor["tag"]["display"]["Name"] as string).includes("Warden")) hasWarden = true;
-      })
-    }
-    if (petName.includes("BLACK_CAT")) hasBlackCat = true;
-    if (petName.includes("SNAIL")) hasSnail = true;
-    
+      }
+      if ((armor["tag"]["display"]["Name"] as string).includes("Warden")) hasWarden = true;
+    })
+  }
+  if (petName.includes("BLACK_CAT")) hasBlackCat = true;
+  if (petName.includes("SNAIL")) hasSnail = true;
 
-    if(hasWarden) 
-    {
-      statValue = statValue / 2;
-      givesStats.push(new GivesStat("Warden Helmet", "Speed is half the normal one!"));
-    }
-    if(hasSnail)
-    { 
-      statValue = 100;
-      givesStats.push(new GivesStat("Snail", "Max speed is 100!"));
-    }
-    if(statValue > 400){
-    if(hasBlackCat){
-      if(statValue < 500){
+
+  if (hasWarden) {
+    statValue = statValue / 2;
+    givesStats.push(new GivesStat("Warden Helmet", "Speed is half the normal one!"));
+  }
+  if (hasSnail) {
+    statValue = 100;
+    givesStats.push(new GivesStat("Snail", "Max speed is 100!"));
+  }
+  if (statValue > 400) {
+    if (hasBlackCat) {
+      if (statValue < 500) {
         givesStats.push(new GivesStat("Black Cat", "Max speed is 500!"));
       }
-      else{
+      else {
         statValue = 500;
         givesStats.push(new GivesStat("Black Cat", "Max speed is 500!"));
       }
     }
-    if(hasRacing){
-      if(statValue < 500){
+    if (hasRacing) {
+      if (statValue < 500) {
         givesStats.push(new GivesStat("Racing Helmet", "Max speed is 500!"));
       }
-      else{
+      else {
         statValue = 500;
         givesStats.push(new GivesStat("Racing Helmet", "Max speed is 500!"));
       }
     }
-    if(hasRancher){
-      if(statValue < RancherCap){
+    if (hasRancher) {
+      if (statValue < RancherCap) {
         givesStats.push(new GivesStat("Rancher Boots", "Max speed is " + RancherCap.toString() + "!"));
       }
-      else{
+      else {
         statValue = RancherCap;
         givesStats.push(new GivesStat("Rancher Boots", "Max speed is " + RancherCap.toString() + "!"));
       }
     }
-    if(youngDragonCount === 4){
-      if(statValue < 500){
+    if (youngDragonCount === 4) {
+      if (statValue < 500) {
         givesStats.push(new GivesStat("Young Dragon Armor", "Max speed is 500!"));
       }
-      else{
+      else {
         statValue = 500;
         givesStats.push(new GivesStat("Young Dragon Armor", "Max speed is 500!"));
       }
     }
 
   }
-  const playerStats: PlayerStats = new PlayerStats("Speed", statValue, givesStats);
+  const playerStats: PlayerStats = new PlayerStats("Speed", Math.floor(statValue), givesStats);
   return playerStats;
 }
 

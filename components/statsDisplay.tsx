@@ -24,7 +24,7 @@ export const StatsDisplay = ({
   skillData: any;
 }) => {
   const [networth, setNetworth] = useState("0");
-  const [stats, setStats] = useState<PlayerStats[] | null>(null);
+  const [stats, setStats] = useState<PlayerStats[] | null | string>(null);
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetch(`/api/museumAPI?id=${uuid}`);
@@ -73,17 +73,43 @@ export const StatsDisplay = ({
       >
         {stats == null ? (
           <div>Loading...</div>
-        ) : (
+        ) : stats !== "disabled" ? (
           <>
-            {stats.map((playerstat) => {
+            {(stats as PlayerStats[]).map((playerstat: PlayerStats) => {
               return (
-                <SoloStat
-                  playerstat={playerstat}
-                  key={playerstat.stat}
-                ></SoloStat>
+                <Tooltip
+                  content={
+                    <div
+                      style={{
+                        textAlign: "left",
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {playerstat.gives.map((gives) => (
+                        <p>
+                          <span style={{ color: "gray" }}>
+                            {gives.itemName}
+                            {": "}
+                          </span>
+                          <span>{gives.value}</span>
+                        </p>
+                      ))}
+                    </div>
+                  }
+                >
+                  <div>
+                    <SoloStat
+                      playerstat={playerstat}
+                      key={playerstat.stat}
+                    ></SoloStat>
+                  </div>
+                </Tooltip>
               );
             })}
           </>
+        ) : (
+          <></>
         )}
       </div>
       <br></br>
