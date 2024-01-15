@@ -83,6 +83,7 @@ export async function CalculateStats(playerData: any, skillData: any) {
   array.push(calculateDefense(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateSpeed(playerData, armorek, equipment, petstats, accsPlayer, skillData, petName));
   array.push(calculateStrength(playerData, armorek, equipment, petstats, accsPlayer, skillData));
+  array.push(calculateInt(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   /*
       new PlayerStats("Intelligence", 0, []),
       new PlayerStats("Crit Chance", 0, []),
@@ -111,7 +112,26 @@ const calculateInt = (
   const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Intelligence");
   let statValue = (stats[0] as number);
   const givesStats = stats[1] as GivesStat[];
-  // https://wiki.hypixel.net/Intelligence#Other_
+  const intUpgrade = playerData["player_data"]["perks"]["permanent_intelligence"]
+  if (intUpgrade) {
+    statValue += intUpgrade;
+    givesStats.push(new GivesStat("Perks", intUpgrade));
+  }
+  const skillValue = getSkillInt(playerData, skillData);
+statValue += skillValue;
+givesStats.push(new GivesStat("Skills", skillValue));
+const harp = Object.keys(playerData["quests"]["harp_quest"]);
+let harpGives = 0;
+if(harp){
+const temp = harp.filter((f) => f.includes("perfect"));
+const count = temp.length;
+if(count <= 3) harpGives = count;
+else if(count <= 6) harpGives = (count - 3) * 2 + 3;
+else if(count <= 9) harpGives = (count - 6) * 3 + 9;
+else if(count <= 11) harpGives = (count - 8) * 4 + 18;
+else if(count === 12) harpGives = (count - 9) * 4 + 19;
+else if(count === 13) harpGives = (count - 11) * 4 + 20;
+}
   const playerStats: PlayerStats = new PlayerStats("Intelligence", Math.floor(statValue), givesStats);
   return playerStats;
 }
@@ -461,6 +481,21 @@ function getSkillDefense(playerData: any, skillData: any) {
     stat += (lvl - 14) * 2
   }
   else stat += lvl;
+  return stat;
+}
+
+function getSkillInt(playerData: any, skillData: any){
+  const lvlalch = GetSkillLvl(playerData, "ALCHEMY", skillData);
+  const lvlench = GetSkillLvl(playerData, "ENCHANTING", skillData);
+  const lvlarr = [lvlalch, lvlench];
+  let stat = 0;
+  lvlarr.forEach((lvl) => {
+  if (lvl >= 14) {
+    stat += 14;
+    stat += (lvl - 14) * 2
+  }
+  else stat += lvl;
+  });
   return stat;
 }
 
