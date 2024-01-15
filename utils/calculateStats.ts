@@ -84,7 +84,6 @@ export async function CalculateStats(playerData: any, skillData: any) {
   array.push(calculateSpeed(playerData, armorek, equipment, petstats, accsPlayer, skillData, petName));
   array.push(calculateStrength(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   /*
-      
       new PlayerStats("Intelligence", 0, []),
       new PlayerStats("Crit Chance", 0, []),
       new PlayerStats("Crit Damage", 0, []),
@@ -99,6 +98,22 @@ export async function CalculateStats(playerData: any, skillData: any) {
   console.log(array);
   return array;
 
+}
+
+const calculateInt = (
+  playerData: any,
+  armorData: any,
+  equipData: any,
+  petStats: any,
+  accsData: any,
+  skillData: any
+): PlayerStats => {
+  const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Intelligence");
+  let statValue = (stats[0] as number);
+  const givesStats = stats[1] as GivesStat[];
+  // https://wiki.hypixel.net/Intelligence#Other_
+  const playerStats: PlayerStats = new PlayerStats("Intelligence", Math.floor(statValue), givesStats);
+  return playerStats;
 }
 
 const calculateStrength = (
