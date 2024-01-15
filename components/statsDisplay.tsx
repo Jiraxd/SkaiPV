@@ -87,7 +87,7 @@ export const StatsDisplay = ({
                       }}
                     >
                       {playerstat.gives.map((gives) => (
-                        <p>
+                        <p key={gives.itemName}>
                           <span style={{ color: "gray" }}>
                             {gives.itemName}
                             {": "}

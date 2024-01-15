@@ -99,6 +99,10 @@ export async function CalculateStats(playerData: any, skillData: any) {
   return array;
 
 }
+
+const PotionToSpeed: number[] = [
+5, 10, 15, 20,25,30,35,40
+];
 const calculateSpeed = (
   playerData: any,
   armorData: any,
@@ -131,6 +135,19 @@ const calculateSpeed = (
   let RancherCap = 400;
   let hasSnail = false;
   let hasWarden = false;
+  let speedPotionLevel = 0;
+
+  const speedPot = (playerData["player_data"]["active_effects"] as []).find((f) => f["effect"] === "speed");
+
+  if(speedPot){
+    speedPotionLevel = speedPot["level"];
+  }
+  if(speedPotionLevel != 0){
+    const speedAdd = PotionToSpeed[speedPotionLevel - 1];
+    statValue += speedAdd;
+    givesStats.push(new GivesStat("Potion", speedAdd));
+  }
+
   // potiony
   if (armorData) {
     (armorData as []).forEach((armor) => {
