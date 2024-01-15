@@ -84,6 +84,7 @@ export async function CalculateStats(playerData: any, skillData: any) {
   array.push(calculateSpeed(playerData, armorek, equipment, petstats, accsPlayer, skillData, petName));
   array.push(calculateStrength(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateInt(playerData, armorek, equipment, petstats, accsPlayer, skillData));
+  array.push(calculateCritChance(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   /*
       new PlayerStats("Crit Chance", 0, []),
       new PlayerStats("Crit Damage", 0, []),
@@ -98,6 +99,31 @@ export async function CalculateStats(playerData: any, skillData: any) {
   console.log(array);
   return array;
 
+}
+
+const calculateCritChance = (
+  playerData: any,
+  armorData: any,
+  equipData: any,
+  petStats: any,
+  accsData: any,
+  skillData: any
+): PlayerStats => {
+  const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Crit Chance");
+  let statValue = (stats[0] as number);
+  const givesStats = stats[1] as GivesStat[];
+  const lvl = GetSkillLvl(playerData, "COMBAT", skillData);
+  statValue += lvl * 0.5;
+  givesStats.push(new GivesStat("Skills", lvl * 0.5));
+  const regex = /[^\d]/g;
+  const spdierArray = Object.keys(playerData["slayer"]["slayer_bosses"]["spider"]["claimed_levels"]);
+  const spiderLvl = spdierArray.length > 1 ? parseInt(spdierArray[spdierArray.length - 1].replace(regex, "")) : 0;
+  if(spiderLvl >= 7){
+    statValue += 1;
+    givesStats.push(new GivesStat("Slayers", 1));
+  }
+  const playerStats: PlayerStats = new PlayerStats("Crit Chance", Math.floor(statValue), givesStats);
+  return playerStats;
 }
 
 const calculateInt = (

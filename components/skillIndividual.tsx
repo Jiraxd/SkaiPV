@@ -1,5 +1,4 @@
 import { Progress } from "@nextui-org/progress";
-import { Tooltip } from "@nextui-org/tooltip";
 import Image from "next/image";
 export const SoloSkill = ({
   playerData,
@@ -64,7 +63,6 @@ export const SoloSkill = ({
     }
   }
   return (
-    <Tooltip content={valueskill + "/" + maxValue + " exp"}>
     <div
       style={{
         justifyContent: "center",
@@ -106,6 +104,5 @@ export const SoloSkill = ({
         style={{ zIndex: "-1" }}
       ></Progress>
     </div>
-    </Tooltip>
   );
 };
