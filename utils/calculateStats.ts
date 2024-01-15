@@ -82,8 +82,9 @@ export async function CalculateStats(playerData: any, skillData: any) {
   array.push(calculateHealth(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateDefense(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateSpeed(playerData, armorek, equipment, petstats, accsPlayer, skillData, petName));
+  array.push(calculateStrength(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   /*
-      new PlayerStats("Strength", 0, []),
+      
       new PlayerStats("Intelligence", 0, []),
       new PlayerStats("Crit Chance", 0, []),
       new PlayerStats("Crit Damage", 0, []),
@@ -100,9 +101,57 @@ export async function CalculateStats(playerData: any, skillData: any) {
 
 }
 
+const calculateStrength = (
+  playerData: any,
+  armorData: any,
+  equipData: any,
+  petStats: any,
+  accsData: any,
+  skillData: any
+): PlayerStats => {
+  const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Strength");
+  let statValue = (stats[0] as number);
+  const givesStats = stats[1] as GivesStat[];
+  const blazeSlayerGives = getSlayerStrength(playerData);
+  if(blazeSlayerGives > 0){
+    statValue += blazeSlayerGives;
+    givesStats.push(new GivesStat("Slayers", blazeSlayerGives));
+  }
+  const strengthUpgrade = playerData["player_data"]["perks"]["permanent_strength"]
+  if (strengthUpgrade) {
+    statValue += strengthUpgrade;
+    givesStats.push(new GivesStat("Perks", strengthUpgrade));
+  }
+  let speedPotionLevel = 0;
+  const speedPot = (playerData["player_data"]["active_effects"] as []).find((f) => f["effect"] === "strength");
+  if(speedPot){
+    speedPotionLevel = speedPot["level"];
+  }
+  if(speedPotionLevel != 0){
+    const potionAdd = PotionToStrength[speedPotionLevel - 1];
+    statValue += potionAdd;
+    givesStats.push(new GivesStat("Potion", potionAdd));
+  }
+  const levelUnformatted = playerData["leveling"][
+    "experience"
+  ] as number;
+  const sblevel = Math.floor(levelUnformatted / 100);
+  const valueStr = Math.floor(sblevel / 5);
+  statValue += valueStr;
+  givesStats.push(new GivesStat("SB Level", valueStr));
+const strengthSkill = getSkillStrength(playerData, skillData);
+statValue += strengthSkill;
+givesStats.push(new GivesStat("Skills", strengthSkill));
+  const playerStats: PlayerStats = new PlayerStats("Strength", Math.floor(statValue), givesStats);
+  return playerStats;
+}
+
 const PotionToSpeed: number[] = [
 5, 10, 15, 20,25,30,35,40
 ];
+const PotionToStrength: number[] = [
+  5,	12.5,	20,	30,	40,	50,	60,	75
+  ];
 const calculateSpeed = (
   playerData: any,
   armorData: any,
@@ -148,7 +197,6 @@ const calculateSpeed = (
     givesStats.push(new GivesStat("Potion", speedAdd));
   }
 
-  // potiony
   if (armorData) {
     (armorData as []).forEach((armor) => {
       if ((armor["tag"]["display"]["Name"] as string).includes("Young Dragon")) youngDragonCount++;
@@ -401,6 +449,17 @@ function getSkillDefense(playerData: any, skillData: any) {
   return stat;
 }
 
+function getSkillStrength(playerData: any, skillData: any) {
+  const lvl = GetSkillLvl(playerData, "FORAGING", skillData);
+  let stat = 0;
+  if (lvl >= 14) {
+    stat += 14;
+    stat += (lvl - 14) * 2
+  }
+  else stat += lvl;
+  return stat;
+}
+
 function getSkillHealth(playerData: any, skillData: any) {
   const farmingLvl = GetSkillLvl(playerData, "FARMING", skillData);
   const fishingLvl = GetSkillLvl(playerData, "FISHING", skillData);
@@ -464,6 +523,15 @@ function getSlayerSpeed(playerData: any) {
   return statValue;
 }
 
+function getSlayerStrength(playerData: any){
+  const regex = /[^\d]/g;
+  let statValue = 0;
+  const blazeArray = Object.keys(playerData["slayer"]["slayer_bosses"]["blaze"]["claimed_levels"]);
+  const blazeSlayerLvl = blazeArray.length > 1 ? parseInt(blazeArray[blazeArray.length - 1].replace(regex, "")) : 0;
+ if(blazeSlayerLvl >= 2) statValue++;
+ if(blazeSlayerLvl >= 6) statValue += 2;
+  return statValue;
+}
 function getSlayerHealth(playerData: any) {
   const regex = /[^\d]/g;
   let healthValue = 0;
