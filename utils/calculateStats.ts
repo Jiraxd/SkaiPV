@@ -123,7 +123,7 @@ const calculateCritChance = (
     givesStats.push(new GivesStat("Slayers", 1));
   }
 // https://wiki.hypixel.net/Critical_Potion
-  const playerStats: PlayerStats = new PlayerStats("Crit Chance", Math.floor(statValue), givesStats);
+  const playerStats: PlayerStats = new PlayerStats("Crit Chance", statValue, givesStats);
   return playerStats;
 }
 
