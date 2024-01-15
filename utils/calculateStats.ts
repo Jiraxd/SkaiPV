@@ -85,7 +85,6 @@ export async function CalculateStats(playerData: any, skillData: any) {
   array.push(calculateStrength(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateInt(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   /*
-      new PlayerStats("Intelligence", 0, []),
       new PlayerStats("Crit Chance", 0, []),
       new PlayerStats("Crit Damage", 0, []),
       new PlayerStats("Magic Find", 0, []),

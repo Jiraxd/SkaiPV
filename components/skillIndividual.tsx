@@ -92,6 +92,8 @@ export const SoloSkill = ({
           height={28}
         />
       </div>
+      <Tooltip content={valueskill + "/" + maxValue + " exp"}>
+        <div>
       <Progress
         label={
           <div style={{ transform: "translateY(25%) translateX(7px)" }}>
@@ -104,6 +106,8 @@ export const SoloSkill = ({
         color={usePrimary ? "warning" : "success"}
         style={{ zIndex: "-1" }}
       ></Progress>
+      </div>
+      </Tooltip>
     </div>
   );
 };
