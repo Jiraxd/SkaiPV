@@ -78,6 +78,7 @@ export const StatsDisplay = ({
             {(stats as PlayerStats[]).map((playerstat: PlayerStats) => {
               return (
                 <Tooltip
+                  key={playerstat.stat}
                   content={
                     <div
                       style={{
