@@ -85,9 +85,8 @@ export async function CalculateStats(playerData: any, skillData: any) {
   array.push(calculateStrength(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateInt(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateCritChance(playerData, armorek, equipment, petstats, accsPlayer, skillData));
+  array.push(calculateCritDamage(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   /*
-      new PlayerStats("Crit Chance", 0, []),
-      new PlayerStats("Crit Damage", 0, []),
       new PlayerStats("Magic Find", 0, []),
       new PlayerStats("Pet Luck", 0, []),
       new PlayerStats("True Defense", 0, []),
@@ -101,6 +100,38 @@ export async function CalculateStats(playerData: any, skillData: any) {
 
 }
 
+const calculateCritDamage = (
+  playerData: any,
+  armorData: any,
+  equipData: any,
+  petStats: any,
+  accsData: any,
+  skillData: any
+): PlayerStats => {
+  const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Crit Damage");
+  let statValue = (stats[0] as number);
+  const givesStats = stats[1] as GivesStat[];
+  statValue += 50;
+  givesStats.push(new GivesStat("Base Value", 50));
+  const slayerStats = getSlayerCritDmg(playerData);
+  if(slayerStats > 0){
+    statValue += slayerStats;
+    givesStats.push(new GivesStat("Slayers", slayerStats));
+  }
+  let PotionLevel = 0;
+  const Pot = (playerData["player_data"]["active_effects"] as []).find((f) => f["effect"] === "critical");
+  if(Pot){
+    PotionLevel = Pot["level"];
+  }
+  if(PotionLevel != 0){
+    const potionAdd = PotionToCritDmg[PotionLevel - 1];
+    statValue += potionAdd;
+    givesStats.push(new GivesStat("Potion", potionAdd));
+  }
+  const playerStats: PlayerStats = new PlayerStats("Crit Damage", statValue, givesStats);
+  return playerStats;
+}
+
 const calculateCritChance = (
   playerData: any,
   armorData: any,
@@ -112,6 +143,8 @@ const calculateCritChance = (
   const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Crit Chance");
   let statValue = (stats[0] as number);
   const givesStats = stats[1] as GivesStat[];
+  statValue += 30;
+  givesStats.push(new GivesStat("Base Value", 30));
   const lvl = GetSkillLvl(playerData, "COMBAT", skillData);
   statValue += lvl * 0.5;
   givesStats.push(new GivesStat("Skills", lvl * 0.5));
@@ -122,10 +155,21 @@ const calculateCritChance = (
     statValue += 1;
     givesStats.push(new GivesStat("Slayers", 1));
   }
-// https://wiki.hypixel.net/Critical_Potion
+  let PotionLevel = 0;
+  const Pot = (playerData["player_data"]["active_effects"] as []).find((f) => f["effect"] === "critical");
+  if(Pot){
+    PotionLevel = Pot["level"];
+  }
+  if(PotionLevel != 0){
+    const potionAdd = PotionToCritChance[PotionLevel - 1];
+    statValue += potionAdd;
+    givesStats.push(new GivesStat("Potion", potionAdd));
+  }
   const playerStats: PlayerStats = new PlayerStats("Crit Chance", statValue, givesStats);
   return playerStats;
 }
+
+
 
 const calculateInt = (
   playerData: any,
@@ -157,6 +201,9 @@ else if(count <= 9) harpGives = (count - 6) * 3 + 9;
 else if(count <= 11) harpGives = (count - 8) * 4 + 18;
 else if(count === 12) harpGives = (count - 9) * 4 + 19;
 else if(count === 13) harpGives = (count - 11) * 4 + 20;
+}
+if(harpGives > 0){
+  givesStats.push(new GivesStat("Harp Completion", harpGives));
 }
   const playerStats: PlayerStats = new PlayerStats("Intelligence", Math.floor(statValue), givesStats);
   return playerStats;
@@ -213,6 +260,13 @@ const PotionToSpeed: number[] = [
 const PotionToStrength: number[] = [
   5,	12.5,	20,	30,	40,	50,	60,	75
   ];
+
+  const PotionToCritChance: number[] = [
+    10,	15, 20, 25
+    ];
+    const PotionToCritDmg: number[] = [
+      10, 20, 30,40
+      ];
 const calculateSpeed = (
   playerData: any,
   armorData: any,
@@ -426,8 +480,12 @@ const getStatFromItems = (playerData: any,
   });
   if (accessoriesValue > 0)
     givesStats.push(new GivesStat("Accessories", accessoriesValue));
-  const powerHealth = playerData["accessory_bag_storage"]["tuning"]["slot_0"][stat.toLowerCase()];
+  let powerHealth = playerData["accessory_bag_storage"]["tuning"]["slot_0"][stat.toLowerCase()];
   if (powerHealth > 0) {
+    if(stat === "Intelligence") powerHealth *= 2;
+    if(stat === "Crit Chance") powerHealth *= 0.2;
+    if(stat === "Health") powerHealth *= 5;
+    if(stat === "Speed") powerHealth *= 1.5;
     statValue += powerHealth;
     givesStats.push(new GivesStat("Accs Power", powerHealth));
   }
@@ -594,6 +652,62 @@ function getSlayerSpeed(playerData: any) {
       break;
     case 9:
       statValue += 3;
+      break;
+  }
+  return statValue;
+}
+
+function getSlayerCritDmg(playerData: any) {
+  let statValue = 0;
+  const regex = /[^\d]/g;
+  const wolfArray = Object.keys(playerData["slayer"]["slayer_bosses"]["wolf"]["claimed_levels"]);
+  const wolfLvl = wolfArray.length > 1 ? parseInt(wolfArray[wolfArray.length - 1].replace(regex, "")) : 0;
+  switch (wolfLvl) {
+    case 5:
+      statValue += 1;
+      break;
+    case 6:
+      statValue += 1;
+      break;
+    case 7:
+      statValue += 3;
+      break;
+    case 8:
+      statValue += 3;
+      break;
+    case 9:
+      statValue += 3;
+      break;
+  }
+  const spiderArray = Object.keys(playerData["slayer"]["slayer_bosses"]["spider"]["claimed_levels"]);
+  const spiderSlayerLvl = spiderArray.length > 1 ? parseInt(spiderArray[spiderArray.length - 1].replace(regex, "")) : 0;
+  switch (spiderSlayerLvl) {
+    case 1:
+      statValue += 1;
+      break;
+    case 2:
+      statValue += 2;
+      break;
+    case 3:
+      statValue += 3;
+      break;
+    case 4:
+      statValue += 4;
+      break;
+    case 5:
+      statValue += 6;
+      break;
+    case 6:
+      statValue += 8;
+      break;
+    case 7:
+      statValue += 8;
+      break;
+    case 8:
+      statValue += 11;
+      break;
+    case 9:
+      statValue += 14;
       break;
   }
   return statValue;
