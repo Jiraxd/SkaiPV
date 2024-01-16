@@ -86,8 +86,9 @@ export async function CalculateStats(playerData: any, skillData: any) {
   array.push(calculateInt(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateCritChance(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateCritDamage(playerData, armorek, equipment, petstats, accsPlayer, skillData));
+  array.push(calculateAttackSpeed(playerData, armorek, equipment, petstats, accsPlayer));
   /*
-      new PlayerStats("Magic Find", 0, []),
+      new PlayerStats("Bonus Attack Speed", 0, []),
       new PlayerStats("Pet Luck", 0, []),
       new PlayerStats("True Defense", 0, []),
       new PlayerStats("SC Chance", 0, []),
@@ -98,6 +99,19 @@ export async function CalculateStats(playerData: any, skillData: any) {
   console.log(array);
   return array;
 
+}
+const calculateAttackSpeed = (
+  playerData: any,
+  armorData: any,
+  equipData: any,
+  petStats: any,
+  accsData: any
+): PlayerStats => {
+  const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Bonus Attack Speed");
+  let statValue = (stats[0] as number);
+  const givesStats = stats[1] as GivesStat[];
+  const playerStats: PlayerStats = new PlayerStats("Bonus Attack Speed", statValue, givesStats);
+  return playerStats;
 }
 
 const calculateCritDamage = (
