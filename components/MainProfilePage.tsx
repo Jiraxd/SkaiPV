@@ -18,6 +18,7 @@ import { PetsDisplay } from "./PetsDisplay";
 import { SlayersDisplay } from "./slayersDisplay";
 import { CollectionsDisplay } from "./CollectionsDisplay";
 import { RiftDisplay } from "./RiftDisplay";
+import { MuseumDisplay } from "./museumDisplay";
 
 // MIN RES JE 1321X1080, POTOM TO CHCE PŘEDĚLAT
 export const MainProfilePage = ({
@@ -340,7 +341,7 @@ export const MainProfilePage = ({
           ></AccDisplay>
         </div>
         <Spacer y={10} />
-        <div id="accessories">
+        <div id="inventory">
           <h1
             className={title()}
             style={{
@@ -353,7 +354,7 @@ export const MainProfilePage = ({
           </h1>
         </div>
         <Spacer y={4} />
-        <div id="inventory">
+        <div>
           <InvDisplay playerData={currentProfile}></InvDisplay>
         </div>
         <Spacer y={10} />
@@ -415,7 +416,7 @@ export const MainProfilePage = ({
           ></CollectionsDisplay>
         </div>
         <Spacer y={12} />
-        <div id="hotm">
+        <div id="rift">
           <h1
             className={title()}
             style={{
@@ -430,6 +431,23 @@ export const MainProfilePage = ({
         <Spacer y={4} />
         <div>
           <RiftDisplay profileData={currentProfile}></RiftDisplay>
+        </div>
+        <Spacer y={12} />
+        <div id="museum">
+          <h1
+            className={title()}
+            style={{
+              borderBottom: "4px solid green",
+              display: "inline-block",
+              paddingBottom: "8px",
+            }}
+          >
+            Museum
+          </h1>
+        </div>
+        <Spacer y={4} />
+        <div>
+          <MuseumDisplay playerData={currentProfile}></MuseumDisplay>
         </div>
         <Spacer y={96} />
         <Spacer y={96} />

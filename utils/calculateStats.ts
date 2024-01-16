@@ -79,6 +79,32 @@ export async function CalculateStats(playerData: any, skillData: any) {
     const invContent = await ConvertNBTToJson(encodedInv);
     accsPlayer = await invContent.filter((acc) => acc["tag"] != null);
   }
+  let petscore: number = 0;
+  const uniquePets: string[] = [];
+  const petlistFinished: any[] = (playerData["pets_data"]["pets"] as []);
+
+  if(petlistFinished){
+    if(petlistFinished.length > 0){
+  petlistFinished.forEach((p) => {
+    if (!uniquePets.includes(p["type"])) uniquePets.push(p);
+  });
+  uniquePets.forEach((p: any) => {
+    const pet = new (PET_STATS as IStringIndex)[p["type"]](
+      p["tier"],
+      getPetLevel(p["exp"], p["tier"], 100),
+      null,
+      playerData
+    );
+    if (pet["level"]["level"] === 100) petscore++;
+    if (p["tier"] === "COMMON") petscore++;
+    else if (p["tier"] === "UNCOMMON") petscore = petscore + 2;
+    else if (p["tier"] === "RARE") petscore = petscore + 3;
+    else if (p["tier"] === "EPIC") petscore = petscore + 4;
+    else if (p["tier"] === "LEGENDARY") petscore = petscore + 5;
+    else if (p["tier"] === "MYTHIC") petscore = petscore + 6;
+  });
+}
+}
   array.push(calculateHealth(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateDefense(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateSpeed(playerData, armorek, equipment, petstats, accsPlayer, skillData, petName));
@@ -87,18 +113,151 @@ export async function CalculateStats(playerData: any, skillData: any) {
   array.push(calculateCritChance(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateCritDamage(playerData, armorek, equipment, petstats, accsPlayer, skillData));
   array.push(calculateAttackSpeed(playerData, armorek, equipment, petstats, accsPlayer));
-  /*
-      new PlayerStats("Bonus Attack Speed", 0, []),
-      new PlayerStats("Pet Luck", 0, []),
-      new PlayerStats("True Defense", 0, []),
-      new PlayerStats("SC Chance", 0, []),
-      new PlayerStats("Mining Fortune", 0, []),
-      new PlayerStats("Farming Fortune", 0, []),
-      new PlayerStats("Foraging Fortune", 0, []),
-  */
+  array.push(calculateMagicFind(playerData, armorek, equipment, petstats, accsPlayer, petscore));
+  array.push(calculatePetLuck(playerData, armorek, equipment, petstats, accsPlayer, skillData));
+  array.push(calculateScChance(playerData, armorek, equipment, petstats, accsPlayer, skillData));
+  array.push(calculateFishingSpeed(playerData, armorek, equipment, petstats, accsPlayer));
+ array.push(calculateTrueDefense(playerData, armorek, equipment, petstats, accsPlayer));
+  array.push(calculateFerocity(playerData, armorek, equipment, petstats, accsPlayer));
   console.log(array);
   return array;
 
+}
+const calculateFerocity = (
+  playerData: any,
+  armorData: any,
+  equipData: any,
+  petStats: any,
+  accsData: any
+): PlayerStats => {
+  const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Ferocity");
+  let statValue = (stats[0] as number);
+  const givesStats = stats[1] as GivesStat[];
+  const playerStats: PlayerStats = new PlayerStats("Ferocity", statValue, givesStats);
+  return playerStats;
+}
+const calculateTrueDefense = (
+  playerData: any,
+  armorData: any,
+  equipData: any,
+  petStats: any,
+  accsData: any
+): PlayerStats => {
+  const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "True Defense");
+  let statValue = (stats[0] as number);
+  const givesStats = stats[1] as GivesStat[];
+const slayerGives = getSlayerTrueDef(playerData);
+if(slayerGives > 0){
+  statValue += slayerGives;
+  givesStats.push(new GivesStat("Slayer", slayerGives));
+}
+let PotionLevel = 0;
+  const Pot = (playerData["player_data"]["active_effects"] as []).find((f) => f["effect"] === "true_defense");
+  if(Pot){
+    PotionLevel = Pot["level"];
+  }
+  if(PotionLevel != 0){
+    const potionAdd = PotionToTrueDef[PotionLevel - 1];
+    statValue += potionAdd;
+    givesStats.push(new GivesStat("Potion", potionAdd));
+  }
+  const playerStats: PlayerStats = new PlayerStats("True Defense", statValue, givesStats);
+  return playerStats;
+}
+const calculateFishingSpeed = (
+  playerData: any,
+  armorData: any,
+  equipData: any,
+  petStats: any,
+  accsData: any
+): PlayerStats => {
+  const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Fishing Speed");
+  let statValue = (stats[0] as number);
+  const givesStats = stats[1] as GivesStat[];
+  const playerStats: PlayerStats = new PlayerStats("Fishing Speed", statValue, givesStats);
+  return playerStats;
+}
+const calculateScChance = (
+  playerData: any,
+  armorData: any,
+  equipData: any,
+  petStats: any,
+  accsData: any,
+  skillData: any
+): PlayerStats => {
+  const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Sea Creature Chance");
+  let statValue = (stats[0] as number);
+  const givesStats = stats[1] as GivesStat[];
+  statValue += 20;
+  givesStats.push(new GivesStat("Base Value", 20));
+  const playerStats: PlayerStats = new PlayerStats("SC Chance", statValue, givesStats);
+  return playerStats;
+}
+const calculatePetLuck = (
+  playerData: any,
+  armorData: any,
+  equipData: any,
+  petStats: any,
+  accsData: any,
+  skillData: any
+): PlayerStats => {
+  const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Pet Luck");
+  let statValue = (stats[0] as number);
+  const givesStats = stats[1] as GivesStat[];
+  const lvl = GetSkillLvl(playerData, "TAMING", skillData);
+  statValue += lvl;
+  givesStats.push(new GivesStat("Skills", lvl));
+  let PotionLevel = 0;
+  const Pot = (playerData["player_data"]["active_effects"] as []).find((f) => f["effect"] === "pet_luck");
+  if(Pot){
+    PotionLevel = Pot["level"];
+  }
+  if(PotionLevel != 0){
+    const potionAdd = PotionToPetLuck[PotionLevel - 1];
+    statValue += potionAdd;
+    givesStats.push(new GivesStat("Potion", potionAdd));
+  }
+  const playerStats: PlayerStats = new PlayerStats("Pet Luck", statValue, givesStats);
+  return playerStats;
+}
+const calculateMagicFind = (
+  playerData: any,
+  armorData: any,
+  equipData: any,
+  petStats: any,
+  accsData: any,
+  petscore:any
+): PlayerStats => {
+  const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Magic Find");
+  let statValue = (stats[0] as number);
+  const givesStats = stats[1] as GivesStat[];
+  let bonusmf = 0;
+  if (petscore >= 10 && petscore < 25) bonusmf = 1;
+  else if (petscore >= 25 && petscore < 50) bonusmf = 2;
+  else if (petscore >= 50 && petscore < 75) bonusmf = 3;
+  else if (petscore >= 50 && petscore < 100) bonusmf = 4;
+  else if (petscore >= 75 && petscore < 130) bonusmf = 5;
+  else if (petscore >= 100 && petscore < 175) bonusmf = 6;
+  else if (petscore >= 130 && petscore < 225) bonusmf = 7;
+  else if (petscore >= 175 && petscore < 275) bonusmf = 8;
+  else if (petscore >= 225 && petscore < 325) bonusmf = 9;
+  else if (petscore >= 325) bonusmf = 10;
+  if(bonusmf > 0){
+    statValue += bonusmf;
+    givesStats.push(new GivesStat("Pet Score", bonusmf));
+  }
+  let PotionLevel = 0;
+  const Pot = (playerData["player_data"]["active_effects"] as []).find((f) => f["effect"] === "magic_find");
+  if(Pot){
+    PotionLevel = Pot["level"];
+  }
+  if(PotionLevel != 0){
+    const potionAdd = PotionToMagicFind[PotionLevel - 1];
+    statValue += potionAdd;
+    givesStats.push(new GivesStat("Potion", potionAdd));
+  }
+  const playerStats: PlayerStats = new PlayerStats("Magic Find", statValue, givesStats);
+  return playerStats;
 }
 const calculateAttackSpeed = (
   playerData: any,
@@ -110,7 +269,7 @@ const calculateAttackSpeed = (
   const stats = getStatFromItems(playerData, armorData, equipData, petStats, accsData, "Bonus Attack Speed");
   let statValue = (stats[0] as number);
   const givesStats = stats[1] as GivesStat[];
-  const playerStats: PlayerStats = new PlayerStats("Bonus Attack Speed", statValue, givesStats);
+  const playerStats: PlayerStats = new PlayerStats("Attack Speed", statValue, givesStats);
   return playerStats;
 }
 
@@ -281,6 +440,16 @@ const PotionToStrength: number[] = [
     const PotionToCritDmg: number[] = [
       10, 20, 30,40
       ];
+      const PotionToMagicFind: number[] = [
+        10,25,50,75
+        ];
+        const PotionToPetLuck: number[] = [
+          5,10,15,20
+          ];
+          const PotionToTrueDef: number[] = [
+            5,10,15,20
+            ];
+
 const calculateSpeed = (
   playerData: any,
   armorData: any,
@@ -559,11 +728,11 @@ const calculateHealth = (
 }
 
 function getHealth(line: string): number {
-  const regex = /\s*\+\d+\s*/;
+  const regex = /\s*\+(\d+(\.\d+)?)\s*/;
   const match = (line as string).match(regex);
   if (match) {
     const value = match.toString();
-    const parsedValue = parseInt(value);
+    const parsedValue = parseFloat(value);
     return parsedValue;
   }
   else {
@@ -734,6 +903,16 @@ function getSlayerStrength(playerData: any){
   const blazeSlayerLvl = blazeArray.length > 1 ? parseInt(blazeArray[blazeArray.length - 1].replace(regex, "")) : 0;
  if(blazeSlayerLvl >= 2) statValue++;
  if(blazeSlayerLvl >= 6) statValue += 2;
+  return statValue;
+}
+
+function getSlayerTrueDef(playerData: any){
+  const regex = /[^\d]/g;
+  let statValue = 0;
+  const blazeArray = Object.keys(playerData["slayer"]["slayer_bosses"]["blaze"]["claimed_levels"]);
+  const blazeSlayerLvl = blazeArray.length > 1 ? parseInt(blazeArray[blazeArray.length - 1].replace(regex, "")) : 0;
+ if(blazeSlayerLvl >= 4) statValue++;
+ if(blazeSlayerLvl >= 8) statValue += 2;
   return statValue;
 }
 function getSlayerHealth(playerData: any) {

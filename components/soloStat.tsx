@@ -22,7 +22,11 @@ export const SoloStat = ({ playerstat }: { playerstat: PlayerStats }) => {
       <Spacer x={2}></Spacer>
       <span style={{ color: color }}>{`${playerstat.stat}`}</span>
       <Spacer x={2}></Spacer>
-      <span>{`${playerstat.value}`}</span>
+      <span>{`${
+        playerstat.value.toString().match(/\.(\d+)$/) != null
+          ? playerstat.value.toFixed(1)
+          : playerstat.value
+      }`}</span>
     </div>
   );
 };

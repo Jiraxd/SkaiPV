@@ -191,7 +191,6 @@ export const PetsDisplay = ({
   if (petlistFinished.length < 1) return <div>Player has no pets!</div>;
   const uniquePets: string[] = [];
   let petscore: number = 0;
-  let bonusmf = 0;
   petlistFinished.forEach((p) => {
     if (!uniquePets.includes(p["activePet"]["type"])) uniquePets.push(p);
   });
@@ -204,6 +203,7 @@ export const PetsDisplay = ({
     else if (p["activePet"]["tier"] === "LEGENDARY") petscore = petscore + 5;
     else if (p["activePet"]["tier"] === "MYTHIC") petscore = petscore + 6;
   });
+  let bonusmf = 0;
   if (petscore >= 10 && petscore < 25) bonusmf = 1;
   else if (petscore >= 25 && petscore < 50) bonusmf = 2;
   else if (petscore >= 50 && petscore < 75) bonusmf = 3;

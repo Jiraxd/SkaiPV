@@ -75,39 +75,52 @@ export const StatsDisplay = ({
           <div>Loading...</div>
         ) : stats !== "disabled" ? (
           <>
-            {(stats as PlayerStats[]).map((playerstat: PlayerStats) => {
-              return (
-                <Tooltip
-                  key={playerstat.stat}
-                  content={
-                    <div
-                      style={{
-                        textAlign: "left",
-                        fontSize: "16px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {playerstat.gives.map((gives) => (
-                        <p key={gives.itemName}>
-                          <span style={{ color: "gray" }}>
-                            {gives.itemName}
-                            {": "}
-                          </span>
-                          <span>{gives.value}</span>
-                        </p>
-                      ))}
+            {(stats as PlayerStats[]).map((playerstat: PlayerStats) => (
+              <>
+                {playerstat.gives.length > 0 ? (
+                  <Tooltip
+                    key={playerstat.stat}
+                    content={
+                      <div
+                        style={{
+                          textAlign: "left",
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {playerstat.gives.map((gives) => (
+                          <p key={gives.itemName}>
+                            <span style={{ color: "gray" }}>
+                              {gives.itemName}
+                              {": "}
+                            </span>
+                            <span>
+                              {gives.value.toString().match(/\.(\d+)$/) != null
+                                ? gives.value.toFixed(1)
+                                : gives.value}
+                            </span>
+                          </p>
+                        ))}
+                      </div>
+                    }
+                  >
+                    <div>
+                      <SoloStat
+                        playerstat={playerstat}
+                        key={playerstat.stat}
+                      ></SoloStat>
                     </div>
-                  }
-                >
+                  </Tooltip>
+                ) : (
                   <div>
                     <SoloStat
                       playerstat={playerstat}
                       key={playerstat.stat}
                     ></SoloStat>
                   </div>
-                </Tooltip>
-              );
-            })}
+                )}
+              </>
+            ))}
           </>
         ) : (
           <></>
