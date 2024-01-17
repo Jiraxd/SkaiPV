@@ -119,7 +119,6 @@ export async function CalculateStats(playerData: any, skillData: any) {
   array.push(calculateFishingSpeed(playerData, armorek, equipment, petstats, accsPlayer));
  array.push(calculateTrueDefense(playerData, armorek, equipment, petstats, accsPlayer));
   array.push(calculateFerocity(playerData, armorek, equipment, petstats, accsPlayer));
-  console.log(array);
   return array;
 
 }
@@ -502,11 +501,9 @@ const calculateSpeed = (
       if ((armor["tag"]["display"]["Name"] as string).includes("Rancher")) {
         hasRancher = true;
         const line = (armor["tag"]["display"]["Lore"] as string[]).find((f) => f.includes("Current Speed Cap:"));
-        console.log(line);
         if (line) {
           const parsedNumber = line.substring(line.lastIndexOf("§") + 2, line.length);
           RancherCap = parseInt(parsedNumber);
-          console.log(RancherCap);
         }
       }
       if ((armor["tag"]["display"]["Name"] as string).includes("Warden")) hasWarden = true;

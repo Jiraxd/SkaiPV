@@ -23,7 +23,6 @@ export const RiftDisplay = ({ profileData }: { profileData: any }) => {
   const [selectedSection, setSelected] = useState<number>(0);
   const [navbarHoveredIndex, setNavbarHoveredIndex] = useState<number>(-1);
 
-  console.log(profileData);
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     setMousePosition({ x: event.clientX, y: event.clientY });
   };
