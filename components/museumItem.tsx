@@ -87,6 +87,7 @@ export const MuseumItem = ({
           alt={itemName}
           width={45}
           height={45}
+          unoptimized
         />
 
         {hovered && item != null && item["tag"] != null && (

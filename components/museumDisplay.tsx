@@ -105,6 +105,7 @@ export const MuseumDisplay = ({
               <MuseumItem
                 museumData={museumData["items"]}
                 itemName={item}
+                key={index}
               ></MuseumItem>
             ))}
         </div>
