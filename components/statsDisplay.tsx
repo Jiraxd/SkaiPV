@@ -15,23 +15,26 @@ import { GetSkillLevel } from "@/utils/getSkillLevel";
 export const StatsDisplay = ({
   playerData,
   banking,
-  uuid,
   skillData,
+  profileID,
+  playerUUID,
 }: {
   playerData: any;
   banking: any;
-  uuid: any;
   skillData: any;
+  profileID: string;
+  playerUUID: any;
 }) => {
   const [networth, setNetworth] = useState("0");
   const [stats, setStats] = useState<PlayerStats[] | null | string>(null);
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetch(`/api/museumAPI?id=${uuid}`);
-      const museumData = data.json();
+      const dataMuseum = await fetch(`/api/museumAPI?id=${profileID}`).then(
+        (res) => res.json()
+      );
       const networth = await getNetworth(playerData, moneyBank, {
         v2Endpoint: true,
-        museumData,
+        museumData: dataMuseum["members"][playerUUID],
       });
       const playerstats = await CalculateStats(playerData, skillData);
       setStats(playerstats);

@@ -5,8 +5,8 @@ export async function GET(request: Request) {
   const id = searchParams.get("id");
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
   const data = await fetch(
-    `https://api.hypixel.net/v2/skyblock/museum?key=${apiKey}&uuid=${id}`
+    `https://api.hypixel.net/v2/skyblock/museum?key=${apiKey}&profile=${id}`
   );
   const valuetoreturn = await data.json();
-  return NextResponse.json({ valuetoreturn });
+  return NextResponse.json(valuetoreturn);
 }

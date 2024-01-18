@@ -30,8 +30,8 @@ export const RenderItemData = ({ mcItemArray }: { mcItemArray: any }) => {
   return (
     <>
       {Object.values(mcItemArray).map((data: any, index) => (
-        <div
-          className="group relative cursor-pointer"
+        <div 
+         className="group relative cursor-pointer"
           style={{
             backgroundColor: GetBGColorItem(mcItemArray[index]),
             padding: "15px",

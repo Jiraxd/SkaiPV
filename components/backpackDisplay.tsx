@@ -17,7 +17,9 @@ export const BackpackDisplay = ({ backpackData }: { backpackData: any }) => {
         marginTop: "20px",
       }}
     >
-      <RenderItemData mcItemArray={backpackData}></RenderItemData>
+      <RenderItemData
+        mcItemArray={backpackData}
+      ></RenderItemData>
       {(backpackData as []).filter((data: any) => data["tag"] != null).length <
         1 && <p>This is not a bug! Backpack is empty!</p>}
     </div>

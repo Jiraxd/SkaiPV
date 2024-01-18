@@ -74,12 +74,14 @@ export const MainProfilePage = ({
   let currentProfile: any;
   let profileName = "error";
   let otherMembers: any[] = [];
+  let profileID = "";
   if (params.profile.length > 2) {
     profileName = params.profile[2];
     let tempProfile = Object.values(data["profiles"]).find(
       (profile) => (profile as any)["cute_name"] === profileName
     ) as any;
     try {
+      profileID = tempProfile["profile_id"];
       banking = tempProfile["banking"];
     } catch (err) {
       banking = null;
@@ -95,6 +97,7 @@ export const MainProfilePage = ({
       ) as any;
       try {
         banking = tempProfile["banking"];
+        profileID = tempProfile["profile_id"];
       } catch (err) {
         banking = null;
       }
@@ -107,6 +110,7 @@ export const MainProfilePage = ({
     ) as any;
     try {
       banking = tempProfile["banking"];
+      profileID = tempProfile["profile_id"];
     } catch (err) {
       banking = null;
     }
@@ -229,10 +233,11 @@ export const MainProfilePage = ({
           <div>
             <SkillsDisplay playerData={currentProfile} skillData={skillData} />
             <StatsDisplay
+              profileID={profileID}
               playerData={currentProfile}
               banking={banking}
-              uuid={uuid}
               skillData={skillData}
+              playerUUID={uuid}
             />
           </div>
           <br />
@@ -447,7 +452,10 @@ export const MainProfilePage = ({
         </div>
         <Spacer y={4} />
         <div>
-          <MuseumDisplay playerData={currentProfile}></MuseumDisplay>
+          <MuseumDisplay
+            profileID={profileID}
+            playerUUID={uuid}
+          ></MuseumDisplay>
         </div>
         <Spacer y={96} />
         <Spacer y={96} />
