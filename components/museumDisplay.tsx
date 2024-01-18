@@ -1,11 +1,10 @@
+"use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Tooltip } from "@nextui-org/tooltip";
 import { museumConstant } from "@/constants/museum";
 import { IStringIndex } from "./PetsDisplay";
 import { MuseumItem } from "./museumItem";
-
-const SelectedCategory = ["Weapon", "Armor", "Rarities", "Special"];
 
 export const MuseumDisplay = ({
   profileID,
@@ -14,6 +13,7 @@ export const MuseumDisplay = ({
   profileID: string;
   playerUUID: any;
 }) => {
+  const SelectedCategory = ["Weapon", "Armor", "Rarities", "Special"];
   const [category, setCategory] = useState<number>(0);
   const [selectedPage, setPage] = useState<number>(1);
   const [museumData, setMuseum] = useState<any | null>(null);
@@ -27,7 +27,13 @@ export const MuseumDisplay = ({
     getMuseum();
   }, []);
   if (museumData == null) return <div>Loading...</div>;
-
+  const valuesMuseum = (
+    (museumConstant as IStringIndex)[SelectedCategory[category]] as []
+  ).filter(
+    (value, index) =>
+      index <= 28 * selectedPage && index > 28 * (selectedPage - 1)
+  );
+  // TODO: Page selector
   return (
     <div
       style={{
@@ -85,6 +91,7 @@ export const MuseumDisplay = ({
           position: "relative",
           borderRadius: "10px",
           width: "685px",
+          maxHeight: "400px",
         }}
       >
         <div
@@ -94,20 +101,16 @@ export const MuseumDisplay = ({
             gap: "20px",
             width: "685px",
             flexWrap: "wrap",
+            maxHeight: "400px",
           }}
         >
-          {((museumConstant as IStringIndex)[SelectedCategory[category]] as [])
-            .filter(
-              (value, index) =>
-                index <= 28 * selectedPage && index > 28 * (selectedPage - 1)
-            )
-            .map((item: any, index: number) => (
-              <MuseumItem
-                museumData={museumData["items"]}
-                itemName={item}
-                key={index}
-              ></MuseumItem>
-            ))}
+          {valuesMuseum.map((item: any, index: number) => (
+            <MuseumItem
+              museumData={museumData["items"]}
+              itemName={item}
+              key={item}
+            ></MuseumItem>
+          ))}
         </div>
       </div>
     </div>
