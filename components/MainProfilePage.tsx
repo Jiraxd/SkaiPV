@@ -19,6 +19,7 @@ import { SlayersDisplay } from "./slayersDisplay";
 import { CollectionsDisplay } from "./CollectionsDisplay";
 import { RiftDisplay } from "./RiftDisplay";
 import { MuseumDisplay } from "./museumDisplay";
+import { FishingDisplay } from "./fishingDisplay";
 
 // MIN RES JE 1321X1080, POTOM TO CHCE PŘEDĚLAT
 export const MainProfilePage = ({
@@ -457,9 +458,24 @@ export const MainProfilePage = ({
             playerUUID={uuid}
           ></MuseumDisplay>
         </div>
-        <Spacer y={96} />
-        <Spacer y={96} />
-        <Spacer y={96} />
+        <Spacer y={32} />
+        <div id="fishing">
+          <h1
+            className={title()}
+            style={{
+              borderBottom: "4px solid green",
+              display: "inline-block",
+              paddingBottom: "8px",
+            }}
+          >
+            Fishing
+          </h1>
+        </div>
+        <Spacer y={4} />
+        <div>
+          <FishingDisplay playerData={currentProfile}></FishingDisplay>
+        </div>
+        <Spacer y={24} />
       </div>
       <div
         style={{
