@@ -27,12 +27,20 @@ export const MuseumDisplay = ({
     getMuseum();
   }, []);
   if (museumData == null) return <div>Loading...</div>;
-  const valuesMuseum = (
-    (museumConstant as IStringIndex)[SelectedCategory[category]] as []
-  ).filter(
-    (value, index) =>
-      index <= 28 * selectedPage && index > 28 * (selectedPage - 1)
-  );
+  let valuesMuseum: any[] = [];
+  if (category != 3)
+    valuesMuseum = (
+      (museumConstant as IStringIndex)[SelectedCategory[category]] as []
+    ).filter(
+      (value, index) =>
+        index <= 27 * selectedPage && index >= 27 * (selectedPage - 1)
+    );
+  else {
+    valuesMuseum = (museumData["special"] as []).filter(
+      (value, index) =>
+        index <= 27 * selectedPage && index >= 27 * (selectedPage - 1)
+    );
+  }
   // TODO: Page selector
   return (
     <div
@@ -71,6 +79,7 @@ export const MuseumDisplay = ({
               }}
               onClick={() => {
                 setCategory(index);
+                setPage(1);
               }}
             >
               <Image
@@ -92,6 +101,7 @@ export const MuseumDisplay = ({
           borderRadius: "10px",
           width: "685px",
           maxHeight: "400px",
+          minHeight: "400px",
         }}
       >
         <div
@@ -102,15 +112,58 @@ export const MuseumDisplay = ({
             width: "685px",
             flexWrap: "wrap",
             maxHeight: "400px",
+            minHeight: "365.5px",
           }}
         >
           {valuesMuseum.map((item: any, index: number) => (
             <MuseumItem
-              museumData={museumData["items"]}
-              itemName={item}
-              key={item}
+              museumData={category === 3 ? item : museumData["items"]}
+              itemName={category === 3 ? "" : item}
+              key={category === 3 ? item["donated_time"] : item}
+              isSpecial={category === 3}
             ></MuseumItem>
           ))}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            marginTop: "30px",
+          }}
+        >
+          <p>Current page: {selectedPage}</p>
+          <div
+            style={{
+              marginLeft: "450px",
+              display: "flex",
+            }}
+          >
+            <button
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => selectedPage != 1 && setPage(selectedPage - 1)}
+            >
+              {"<--"}
+            </button>
+            <button
+              style={{
+                marginLeft: "30px",
+                cursor: "pointer",
+              }}
+              onClick={() =>
+                selectedPage * 28 <=
+                  (category === 3
+                    ? valuesMuseum.length
+                    : (
+                        (museumConstant as IStringIndex)[
+                          SelectedCategory[category]
+                        ] as []
+                      ).length) && setPage(selectedPage + 1)
+              }
+            >
+              {"-->"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

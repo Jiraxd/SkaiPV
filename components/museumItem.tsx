@@ -9,9 +9,11 @@ import { Tooltip } from "@nextui-org/tooltip";
 export const MuseumItem = ({
   museumData,
   itemName,
+  isSpecial,
 }: {
   museumData: any;
   itemName: string;
+  isSpecial: boolean;
 }) => {
   const [hovered, setHovered] = useState<boolean>(false);
   const [item, setItem] = useState<any | null>(null);
@@ -26,16 +28,24 @@ export const MuseumItem = ({
   };
 
   useEffect(() => {
-    const itemFound: any = Object.entries(museumData).find(
-      ([key, value]) => key === itemName
-    );
-    const getItem = async () => {
-      const itemDecoded = await ConvertNBTToJson(
-        itemFound["1"]["items"]["data"]
+    if (isSpecial) {
+      const getItem = async () => {
+        const itemDecoded = await ConvertNBTToJson(museumData["items"]["data"]);
+        setItem(itemDecoded["0"]);
+      };
+      getItem();
+    } else {
+      const itemFound: any = Object.entries(museumData).find(
+        ([key, value]) => key === itemName
       );
-      setItem(itemDecoded["0"]);
-    };
-    if (itemFound) getItem();
+      const getItem = async () => {
+        const itemDecoded = await ConvertNBTToJson(
+          itemFound["1"]["items"]["data"]
+        );
+        setItem(itemDecoded["0"]);
+      };
+      if (itemFound) getItem();
+    }
   }, []);
   return (
     <Tooltip
@@ -70,6 +80,8 @@ export const MuseumItem = ({
           borderRadius: "8px",
           minHeight: "75px",
           minWidth: "75px",
+          maxHeight: "75px",
+          maxWidth: "75px",
         }}
         onMouseEnter={(event) => {
           setHovered(true);
