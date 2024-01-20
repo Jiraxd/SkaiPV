@@ -7,7 +7,6 @@ export const FishingMobDisplay = ({
   mobInfo: any;
   mobValue: any;
 }) => {
-  console.log(mobInfo);
   return (
     <div
       style={{

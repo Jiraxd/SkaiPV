@@ -44,7 +44,6 @@ export const Navbar = () => {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-0 max-w-fit">
           <Link className="flex justify-start items-center gap-0" href="/">
-            <Logo />
             <p className="font-bold text-inherit">
               J1R4&apos;s SB Profile Viewer
             </p>
