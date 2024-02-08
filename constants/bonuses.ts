@@ -1,4 +1,3 @@
-// STOLEN FROM SKY.SHIIYU.MOE <3
 export const STATS_BONUS = {
     // Skills
     skill_farming: {
