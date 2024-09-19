@@ -4,6 +4,10 @@ This website allows you to view player profiles for the game Hypixel SkyBlock us
 
 **This is my first website project! It sucks :)**
 
+**You need to input your own key in .env file for hypixel api, the one there is disabled and won't work !**
+*https://developer.hypixel.net/dashboard*
+
+
 ## Features
 
 - Search for any SkyBlock username and view their profile
